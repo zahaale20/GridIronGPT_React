@@ -1,0 +1,41 @@
+.search-bar-container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    margin-top: 300px;
+    height: 100vh; /* Full viewport height */
+    width: 100vw; /* Full viewport width */
+  }
+  
+  .search-form {
+    display: flex;
+    width: 50%; /* Adjust based on preference */
+  }
+  
+  .search-input-container {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    background-color: white;
+    border: 2px solid #ccc;
+    border-radius: 8px;
+  }
+  
+  .search-input {
+    flex-grow: 1;
+    padding: 15px 20px;
+    font-size: 20px; /* Larger font size for better visibility */
+    border: none; /* No border to make it seamless within the container */
+    outline: none; /* Removes the outline to focus on the input */
+  }
+  
+  .search-icon {
+    margin-left: 10px; /* Space before icon */
+    width: 24px; /* Standard icon size */
+    height: 24px; /* Standard icon size */
+    color: #ccc; /* Icon color */
+  }
+  
+  .search-input:focus + .search-icon {
+    color: #007BFF; /* Icon color changes when input is focused */
+  }
