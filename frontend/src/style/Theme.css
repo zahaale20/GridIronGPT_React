@@ -1,0 +1,10 @@
+:dark {
+    --main: #2d2c2b;
+    --sub: #5d5c5b;
+    --text: #ffffff;
+    --main-text: #2d2c2b;
+    --accent:#4cbfee;
+    --icon-height: 22px;
+    --transition-speed: 0.3s;
+    --font-main: 'Futura', sans-serif;
+}

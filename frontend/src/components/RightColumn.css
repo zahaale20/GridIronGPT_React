@@ -1,0 +1,31 @@
+.right-col {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-right: 20px;
+    padding: 20px;
+}
+
+.top-headlines {
+    height: auto;
+    background-color: #ffffff;
+    border-radius: 8px;
+    padding: 20px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+}
+
+.top-headlines h4 {
+    margin-bottom: 10px;
+    color: #333;
+    width: 300px;
+}
+
+.top-headlines ul {
+    list-style-type: none; /* Removes default list styling */
+}
+
+.top-headlines li {
+    padding: 5px 0; /* Padding for each headline */
+    cursor: pointer; /* Pointer cursor on hover */
+}

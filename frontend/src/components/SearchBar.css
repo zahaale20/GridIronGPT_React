@@ -2,14 +2,15 @@
     display: flex;
     justify-content: center;
     align-items: flex-start;
-    margin-top: 300px;
     height: 100vh; /* Full viewport height */
     width: 100vw; /* Full viewport width */
+    padding: 100px;
+    padding-top: 20px;
   }
   
   .search-form {
     display: flex;
-    width: 50%; /* Adjust based on preference */
+    width: 100%; /* Adjust based on preference */
   }
   
   .search-input-container {
@@ -24,16 +25,16 @@
   .search-input {
     flex-grow: 1;
     padding: 15px 20px;
-    font-size: 20px; /* Larger font size for better visibility */
-    border: none; /* No border to make it seamless within the container */
-    outline: none; /* Removes the outline to focus on the input */
+    font-size: 18px;
+    border: none;
+    outline: none;
   }
   
   .search-icon {
-    margin-left: 10px; /* Space before icon */
-    width: 24px; /* Standard icon size */
-    height: 24px; /* Standard icon size */
-    color: #ccc; /* Icon color */
+    margin-left: 10px;
+    width: 24px;
+    height: 24px;
+    color: #ccc;
   }
   
   .search-input:focus + .search-icon {
