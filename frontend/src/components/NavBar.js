@@ -17,7 +17,7 @@ function NavBar() {
         <nav className="nav">
             <div className="top-row">
                 <Link to="/" className="logo-link">
-                    <img className="logo-image" src={logoImage} alt="GridIron GPT Logo" />
+                    <img className="logo-image" src={logoImage} style = {{marginTop: '8px'}} alt="GridIron GPT Logo" />
                 </Link>
                 <div className="top-row-icons">
                     <img className="icon-image" src={questionMarkIcon} alt="Help" />

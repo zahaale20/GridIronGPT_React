@@ -42,14 +42,14 @@
     justify-content: center;
     align-items: center;
     gap: 10px;
-    box-shadow: 0px 10px 10px -5px #2d2c2b;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 .nav-button {
     padding: 10px 20px;
     font-size: 11px;
     color:#2d2c2b;
-    font-family: 'Futura', sans-serif;
+    font-family: arial;
     cursor: pointer;
     background: none;
     border: none;

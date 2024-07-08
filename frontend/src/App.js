@@ -16,6 +16,7 @@ import ProjectionsPage from "./pages/ProjectionsPage";
 import ChatRoomsPage from "./pages/ChatRoomsPage";
 import OddsPage from "./pages/OddsPage";
 import LineupOptimizerPage from "./pages/LineupOptimizerPage";
+import AdditionalDetailsPage from "./pages/authentication/AdditionalDetailsPage";
 
 
 function App() {
@@ -27,6 +28,7 @@ function App() {
           <Route path="/" element={<HomePage/>} />
           <Route path="/signup" element={<SignUpPage/>} />
           <Route path="/login" element={<LoginPage/>} />
+          <Route path="/additional-details" element={<AdditionalDetailsPage/>} />
           <Route path="/profile" element={<ProfilePage/>} />
           <Route path="/help" element={<HelpPage/>} />
           <Route path="/schedules" element={<SchedulesPage/>} />
