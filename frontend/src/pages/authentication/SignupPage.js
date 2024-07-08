@@ -157,14 +157,16 @@ function SignUpPage() {
 		<div className="vertical-center" style={{marginTop: "110px"}}>
 			<div>
 				<div className="small-container drop-shadow">
+					
 					<div className="vertical-center">
-						<img className="logo-img" src={logoImage} alt="Logo" style={{marginTop:"20px"}}/>
+						<img className="logo-img" src={logoImage} alt="Logo" style={{marginTop:"10px"}}/>
 					</div>
-          <h5 className="text-center" style={{ fontSize: "18px" }}>Create an Account</h5>
+          			
+					<h5 className="text-center" style={{ fontSize: "18px" }}>Create an Account</h5>
+					
 					<form onSubmit={handleSubmit}>
 
 						{errorMessage && <div style={{marginLeft:"10px", marginTop:"20px", color:"#C4302B", fontSize:"12px"}}>{errorMessage}</div>}
-
 
 						<div className="input margin"> 
 							<p
