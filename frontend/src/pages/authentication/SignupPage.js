@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from "react";
 import axios from "axios";
 import logoImage from "../../assets/gridirongpt.png";
+import googlepng from "../../assets/google.png";
 import {FaCheckCircle, FaTimesCircle, FaEye, FaEyeSlash} from "react-icons/fa";
 import {Link, useNavigate} from "react-router-dom";
 import "./AuthenticationStyling.css";
@@ -152,9 +153,20 @@ function SignUpPage() {
 		}
 	};
 
+	const handleGoogleLogin = () => {
+		const clientId =
+			"71122616560-tv80mel7fi0s2etitj1enhk192v06h0e.apps.googleusercontent.com";
+
+		const redirectUrl =
+			process.env.REACT_APP_BACKEND_LINK + "/users/auth/google/callback";
+		const scope = encodeURI("email profile");
+		const authUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${clientId}&redirect_uri=${redirectUrl}&response_type=code&scope=${scope}&access_type=offline&prompt=consent`;
+		window.location.href = authUrl;
+	};
+
 	// Render the sign-up form with validation feedback and navigation options
 	return (
-		<div className="vertical-center" style={{marginTop: "110px"}}>
+		<div className="vertical-center margin-top">
 			<div>
 				<div className="small-container drop-shadow">
 					
@@ -162,11 +174,11 @@ function SignUpPage() {
 						<img className="logo-img" src={logoImage} alt="Logo" style={{marginTop:"10px"}}/>
 					</div>
           			
-					<h5 className="text-center" style={{ fontSize: "18px" }}>Create an Account</h5>
+					<h5 className="text-center" style={{ fontSize: "17px", marginLeft: "5px", marginRight: "15px", fontColor: "#2d2c2b" }}>Sign up and win your fantasy football league.</h5>
 					
 					<form onSubmit={handleSubmit}>
 
-						{errorMessage && <div style={{marginLeft:"10px", marginTop:"20px", color:"#C4302B", fontSize:"12px"}}>{errorMessage}</div>}
+						{errorMessage && <div style={{marginLeft:"10px", marginTop:"10px", color:"#C4302B", fontSize:"12px"}}>{errorMessage}</div>}
 
 						<div className="input margin"> 
 							<p
@@ -189,8 +201,8 @@ function SignUpPage() {
 								autoComplete="off"
 								required
 								style={{ paddingRight: "2.5rem", fontSize: "13px", 								
-								paddingTop: user.email ? "16px" : "12px",
-								paddingBottom: user.email ? "8px" : "12px"}}
+								paddingTop: user.email ? "14px" : "10px",
+								paddingBottom: user.email ? "6px" : "10px"}}
 							/>
 							<div className="input-icon" style={{marginTop:"-3px"}}>
 								{user.email.length > 0 ? (
@@ -224,8 +236,8 @@ function SignUpPage() {
 								maxLength="10"
 								onChange={handleChange}
 								style={{ paddingRight: "2.5rem", fontSize: "13px", 								
-								paddingTop: user.phoneNumber ? "16px" : "12px",
-								paddingBottom: user.phoneNumber ? "8px" : "12px"}}
+								paddingTop: user.phoneNumber ? "14px" : "10px",
+								paddingBottom: user.phoneNumber ? "6px" : "10px"}}
 								autoComplete="off"
 								required
 							/>
@@ -264,8 +276,8 @@ function SignUpPage() {
 								maxLength="25"
 								onChange={handleChange}
 								style={{ paddingRight: "2.5rem", fontSize: "13px", 								
-								paddingTop: user.username ? "16px" : "12px",
-								paddingBottom: user.username ? "8px" : "12px"}}
+								paddingTop: user.username ? "14px" : "10px",
+								paddingBottom: user.username ? "6px" : "10px"}}
 								autoComplete="off"
 								required
 							/>
@@ -300,8 +312,8 @@ function SignUpPage() {
 								value={user.fullName}
 								onChange={handleChange}
 								style={{ paddingRight: "2.5rem", fontSize: "13px", 								
-								paddingTop: user.fullName ? "16px" : "12px",
-								paddingBottom: user.fullName ? "8px" : "12px"}}
+								paddingTop: user.fullName ? "14px" : "10px",
+								paddingBottom: user.fullName ? "6px" : "10px"}}
 								autoComplete="off"
 								required
 							/>
@@ -341,8 +353,8 @@ function SignUpPage() {
 								onFocus={handlePasswordFocus}
 								onBlur={handlePasswordBlur}
 								style={{ paddingRight: "2.5rem", fontSize: "13px", 								
-								paddingTop: user.password ? "16px" : "12px",
-								paddingBottom: user.password ? "8px" : "12px"}}
+								paddingTop: user.password ? "14px" : "10px",
+								paddingBottom: user.password ? "6px" : "10px"}}
 								autoComplete="off"
 								required
 							/>
@@ -356,70 +368,91 @@ function SignUpPage() {
 						</div>
 
 						{passwordFocused && (
-              <div className="margin" style={{marginTop:"20px", marginLeft:"20px"}}>
-                <div
-                  style={{
-                    color: user.password.length >= 8 ? "#20609C" : "#C4302B",
-                    fontSize: "12px",
-                    display: "flex",
-                    alignItems: "center",
-                    marginTop: "4px"  // Adjust this value as needed
-                  }}
-                >
-                  {user.password.length >= 8 ? (
-                    <FaCheckCircle />
-                  ) : (
-                    <FaTimesCircle />
-                  )}
-                  <span style={{ marginLeft: "5px" }}>
-                    At least 8 characters
-                  </span>
-                </div>
-                <div
-                  style={{
-                    color: /[0-9]/.test(user.password) ? "#20609C" : "#C4302B",
-                    fontSize: "12px",
-                    display: "flex",
-                    alignItems: "center",
-                    marginTop: "4px"  // Adjust this value as needed
-                  }}
-                >
-                  {/[0-9]/.test(user.password) ? (
-                    <FaCheckCircle />
-                  ) : (
-                    <FaTimesCircle />
-                  )}
-                  <span style={{ marginLeft: "5px" }}>
-                    At least one number
-                  </span>
-                </div>
-                <div
-                  style={{
-                    color: /[\W_]/.test(user.password) ? "#20609C" : "#C4302B",
-                    fontSize: "12px",
-                    display: "flex",
-                    alignItems: "center",
-                    marginTop: "4px"  // Adjust this value as needed
-                  }}
-                >
-                  {/[\W_]/.test(user.password) ? (
-                    <FaCheckCircle />
-                  ) : (
-                    <FaTimesCircle />
-                  )}
-                  <span style={{ marginLeft: "5px" }}>
-                    At least one special character
-                  </span>
-                </div>
-              </div>
-            )}
+							<div className="margin" style={{marginTop:"20px", marginLeft:"20px"}}>
+								<div
+									style={{
+										color: user.password.length >= 8 ? "#20609C" : "#C4302B",
+										fontSize: "12px",
+										display: "flex",
+										alignItems: "center",
+										marginTop: "4px"
+									}}
+								>
+									{user.password.length >= 8 ? (
+										<FaCheckCircle />
+									) : (
+										<FaTimesCircle />
+									)}
+									<span style={{ marginLeft: "5px" }}>
+										At least 8 characters
+									</span>
+								</div>
+								
+								<div
+									style={{
+										color: /[0-9]/.test(user.password) ? "#20609C" : "#C4302B",
+										fontSize: "12px",
+										display: "flex",
+										alignItems: "center",
+										marginTop: "0px"  // Adjust this value as needed
+									}}
+								>
+									{/[0-9]/.test(user.password) ? (
+										<FaCheckCircle />
+									) : (
+										<FaTimesCircle />
+									)}
 
-						<div style={{marginTop: "20px"}}>
+									<span style={{ marginLeft: "5px" }}>
+										At least one number
+									</span>
+								</div>
+								
+								<div
+									style={{
+										color: /[\W_]/.test(user.password) ? "#20609C" : "#C4302B",
+										fontSize: "12px",
+										display: "flex",
+										alignItems: "center",
+										marginTop: "0px"
+									}}
+								>
+									{/[\W_]/.test(user.password) ? (
+										<FaCheckCircle />
+									) : (
+										<FaTimesCircle />
+									)}
+									<span style={{ marginLeft: "5px" }}>
+										At least one special character
+									</span>
+								</div>
+							</div>
+						)}
+
+						<div className="margin" style={{marginTop: "20px"}}>
 							<button
 								className={`span-button ${isFormValid ? "" : "disabled"}`}
 								type="submit"
 							>
 								Sign Up
+							</button>
+						</div>
+
+						<div className="margin">
+							<button
+								className="span-button"
+								onClick={handleGoogleLogin}
+							>
+								<div className="vertical-center">
+									<img
+										className="google-img"
+										src={googlepng}
+										alt="google"
+									></img>
+									<span className="margin-left">
+										Continue with Google
+									</span>
+								</div>
 							</button>
 						</div>
 

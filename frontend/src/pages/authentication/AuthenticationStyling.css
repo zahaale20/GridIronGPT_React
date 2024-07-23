@@ -6,7 +6,7 @@
 }
 
 .logo-img {
-	width: 275px;
+	width: 250px;
 }
 
 .input {
@@ -15,8 +15,8 @@
 
 .input-label-empty {
 	position: absolute;
-	left: 0.75rem;
-	top: 0.68rem;
+	left: 0.9rem;
+	top: 0.5rem;
 	color: gray;
 	font-size: 14px;
 	transition: transform 0.3s ease;
@@ -25,7 +25,7 @@
 
 .input-label-full {
 	position: absolute;
-	left: 0.9rem;
+	left: 0.8rem;
 	top: 0.9rem;
 	color: gray;
 	font-size: 9px;

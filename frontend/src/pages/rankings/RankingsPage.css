@@ -1,0 +1,49 @@
+.rankings-container {
+    margin: 20px;
+    padding: 20px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.rankings-container h1 {
+    margin-top: 0; /* Remove top margin to reduce space */
+    margin-bottom: 10px; /* Reduce bottom margin to bring content closer */
+    padding: 10px 0; /* Reduce padding to make header bar thinner */
+    font-size: 24px; /* Optionally adjust font size if needed */
+}
+
+.rankings-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+.rankings-table th, .rankings-table td {
+    text-align: left;
+    padding-top: 1px;
+    padding-bottom: 1px;
+    border-bottom: 1px solid #ddd;
+}
+
+.rankings-table th {
+    color: white;
+    font-size: 12px;
+}
+
+.rankings-table td {
+    font-size: 16px;
+}
+
+h1, h2 {
+    color: #333;
+}
+
+.header-title {
+    font-size: 24px;
+    margin-bottom: -10px;
+}
+
+.rankings-table thead {
+    background: linear-gradient(to right, #048DCE 0%, #2E3F79 100%);
+}

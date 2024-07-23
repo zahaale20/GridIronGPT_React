@@ -83,13 +83,13 @@ const ChangePasswordPage = () => {
                         </div>
                     </div>
                     {passwordFocused && (
-                        <div className="password-rules" style={{fontSize:"12px", marginTop: "20px", marginLeft: "20px"}}>
+                        <div className="password-rules" style={{fontSize:"12px", marginTop: "10px", marginLeft: "20px"}}>
                             <PasswordRule isValid={password.length >= 8} text="At least 8 characters" />
                             <PasswordRule isValid={/[0-9]/.test(password)} text="At least one number" />
                             <PasswordRule isValid={/[\W_]/.test(password)} text="At least one special character" />
                         </div>
                     )}
-                    <button className={`span-button ${isPasswordValid ? "" : "disabled"}`} type="submit" style={{ marginTop: "20px" }}>
+                    <button className={`span-button ${isPasswordValid ? "" : "disabled"}`} type="submit" style={{ marginTop: "10px" }}>
                         Change Password
                     </button>
                 </form>

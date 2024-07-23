@@ -86,11 +86,12 @@ function LoginPage() {
 
 	// Renders the login form, providing fields for identifier and password, and displays error messages if any exist
 	return (
-		<div className="vertical-center margin-top" style={{marginTop: "110px"}}>
+		<div className="vertical-center margin-top">
 			<div>
 				<div className="small-container drop-shadow">
+					
 					<div className="vertical-center">
-						<img className="logo-img" src={logoImage} alt="Logo" />
+						<img className="logo-img" src={logoImage} alt="Logo" style={{marginTop:"10px"}}/>
 					</div>
 
 					<h5 className="text-center" style={{fontSize: "18px"}}>
@@ -98,14 +99,8 @@ function LoginPage() {
 					</h5>
 
 					<form onSubmit={handleSubmit}>
-						{errorMessage && (
-							<p
-								className="margin"
-								style={{color: "red", fontSize: "12px"}}
-							>
-								{errorMessage}
-							</p>
-						)}
+						
+						{errorMessage && <div style={{marginLeft:"10px", marginTop:"0px", color:"#C4302B", fontSize:"12px"}}>{errorMessage}</div>}
 
 						<div className="margin input">
 							<p
@@ -125,9 +120,9 @@ function LoginPage() {
 								onChange={handleChange}
 								autoComplete="on"
 								required
-                style={{ paddingRight: "2.5rem", fontSize: "13px", 								
-								paddingTop: credentials.identifier ? "16px" : "12px",
-								paddingBottom: credentials.identifier ? "8px" : "12px"}}
+								style={{ paddingRight: "2.5rem", fontSize: "13px", 								
+								paddingTop: credentials.identifier ? "14px" : "10px",
+								paddingBottom: credentials.identifier ? "6px" : "10px"}}
 							/>
 						</div>
 
@@ -149,9 +144,9 @@ function LoginPage() {
 								onChange={handleChange}
 								autoComplete="current-password"
 								required
-                style={{ paddingRight: "2.5rem", fontSize: "13px", 								
-								paddingTop: credentials.password ? "16px" : "12px",
-								paddingBottom: credentials.password ? "8px" : "12px"}}
+								style={{ paddingRight: "2.5rem", fontSize: "13px", 								
+								paddingTop: credentials.password ? "14px" : "10px",
+								paddingBottom: credentials.password ? "6px" : "10px"}}
 							/>
 
 							<div

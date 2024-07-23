@@ -1,3 +1,5 @@
+/* NavBar.css */
+
 .nav {
     width: 100vw;
     display: flex;
@@ -12,13 +14,13 @@
 }
 
 .top-row {
-    background: var(--main);
-    background: #2d2c2b;;
+    background: #2d2c2b;
     display: flex;
     width: 100%;
     padding: 4px 8px;
     align-items: center;
-    gap: 1240px;
+    justify-content: space-between;
+    padding-right: 30px;
 }
 
 .logo-link {
@@ -31,12 +33,13 @@
 }
 
 .icon-image {
-    height: 22px; /* or your preferred size */
+    height: 22px; /* Fixed size for icons */
+    width: 22px;  /* Maintains aspect ratio */
     cursor: pointer;
 }
 
 .bottom-row {
-    background: #ffffff;;
+    background: #ffffff;
     display: flex;
     width: 100%;
     justify-content: center;
@@ -48,12 +51,12 @@
 .nav-button {
     padding: 10px 20px;
     font-size: 11px;
-    color:#2d2c2b;
-    font-family: arial;
+    color: #2d2c2b;
+    font-family: Arial, sans-serif;
     cursor: pointer;
     background: none;
     border: none;
-    transition: transform 0.3s ease-in-out;
+    transition: transform 0.3s ease-in-out, color 0.3s ease-in-out;
 }
 
 .nav-button:hover {
@@ -61,8 +64,8 @@
 }
 
 .logo-image {
-    height: auto;
-    width: 180px;
+    height: auto; /* Allows the height to scale with width */
+    width: 200px; /* Fixed width prevents shrinking */
     transition: transform 0.3s ease-in-out;
 }
 

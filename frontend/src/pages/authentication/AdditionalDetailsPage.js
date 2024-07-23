@@ -67,7 +67,7 @@ function AdditionalDetailsPage() {
                     <img className="logo-img" src={logoImage} alt="Haggle Logo" />
                 </div>
                 <form onSubmit={handleSubmit}>
-                    <h5 className="text-center" style={{ fontSize: "18px", marginTop: "20px" }}>
+                    <h5 className="text-center" style={{ fontSize: "18px", marginTop: "10px" }}>
                         Complete Your Registration
                     </h5>
 					<p className="text-center" style={{ fontSize: "14px", marginTop:"20px" }}>Add your username and phone number to finish registering.</p>
@@ -111,14 +111,14 @@ function AdditionalDetailsPage() {
 					<button
 						className={`span-button ${isFormValid ? "" : "disabled"}`}
 						type="submit"
-						style={{marginTop: "20px"}}
+						style={{marginTop: "10px"}}
 					>
 						Complete Registration
 					</button>
 
 					<p
 						className="text-center"
-						style={{fontSize: "12px", marginTop: "20px"}}
+						style={{fontSize: "12px", marginTop: "10px"}}
 					>
 						By registering you agree to our{" "}
 						<Link to="/terms-of-service">Terms of Service</Link> and

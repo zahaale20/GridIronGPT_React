@@ -419,13 +419,15 @@ router.post("/forgot-password", async (req, res) => {
 		const transporter = nodemailer.createTransport({
 			service: "outlook",
 			auth: {
-				user: "no-reply.haggle@outlook.com",
-				pass: "haggle1234!" // store more securely in .env file
+				user: process.env.OUTLOOK_EMAIL,
+				pass: process.env.OUTLOOK_PASSWORD
 			}
 		});
 
+        console.log("\ntransporter: ", transporter);
+
 		const mailOptions = {
-			from: "no-reply.haggle@outlook.com", // Replace with your email
+			from: process.env.OUTLOOK_EMAIL, // Replace with your email
 			to: email, // The user's email address
 			subject: "Password Reset Request",
 			html: `<p>You requested a password reset. Click the link below to set a new password:</p>
@@ -451,31 +453,32 @@ router.post("/forgot-password", async (req, res) => {
 });
 
 router.post("/reset-password", async (req, res) => {
-	const {token, password} = req.body;
-
+	const { token, password } = req.body;
+  
 	try {
-		const connection = createConnection();
-
-		// Verify token and its expiration
-		const {rows: users} = await connection.query(
-			"SELECT * FROM users WHERE \"resetPasswordToken\" = $1 AND \"resetPasswordExpires\" > NOW()",
-			[token]
-		);
-		if (users.length === 0) {
-			return res.status(400).json({error: "Invalid or expired token"});
-		}
-
-		const hashedPassword = await bcryptjs.hash(password, 10);
-		await connection.query(
-			"UPDATE users SET password = $1, \"resetPasswordToken\" = NULL, \"resetPasswordExpires\" = NULL WHERE \"userID\" = $2",
-			[hashedPassword, users[0].userID]
-		);
-
-		res.json({message: "Password has been reset successfully"});
+	  const connection = createConnection();
+  
+	  // Verify token and its expiration
+	  const { rows: users } = await connection.query(
+		"SELECT * FROM users WHERE \"resetPasswordToken\" = $1 AND \"resetPasswordExpires\" > NOW()",
+		[token]
+	  );
+  
+	  if (users.length === 0) {
+		return res.status(400).json({ error: "Invalid or expired token" });
+	  }
+  
+	  const hashedPassword = await bcryptjs.hash(password, 10);
+	  await connection.query(
+		"UPDATE users SET password = $1, \"resetPasswordToken\" = NULL, \"resetPasswordExpires\" = NULL WHERE \"userID\" = $2",
+		[hashedPassword, users[0].userID]
+	  );
+  
+	  res.json({ message: "Password has been reset successfully" });
 	} catch (error) {
-		res.status(500).json({error: "Failed to reset password"});
+	  res.status(500).json({ error: "Failed to reset password" });
 	}
-});
+  });
 
 // Retrieve user details for given userID.
 router.get("/:userID/", async (req, res) => {
