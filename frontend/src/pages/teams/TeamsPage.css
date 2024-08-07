@@ -1,0 +1,179 @@
+/* General styles */
+.teams-page-container {
+    height: 100vh;
+    display: flex;
+}
+
+.error-message {
+    color: red;
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000;
+    font-weight: bold;
+    background: white;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.leaflet-marker-icon {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+
+/* Control panel styles */
+.control-panel {
+    width: 425px;
+    height: 90vh;
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 15px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    padding: 20px;
+    position: absolute;
+    top: 105px;
+    left: 10px;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.header {
+    text-align: center;
+    width: 100%;
+    background-color: #f5f5f5;
+    padding: 10px 0;
+    font-size: 20px;
+    font-weight: bold;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+}
+
+.filters {
+    display: flex;
+    flex-direction: row; /* Align items in a row */
+    justify-content: space-between;
+    width: 90%;
+    gap: 20px;
+}
+
+.filters label {
+    flex-basis: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 0px;
+}
+
+.filters select {
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid #8d8b8b;
+    font-size: 16px;
+    margin-top: 5px;
+}
+
+.time-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 30px;
+    padding: 0 10px;
+    font-size: 14px;
+}
+
+/* Updated Matchup Details to include Icons */
+.matchup-details {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.matchup-details h3 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0px;
+    font-size: 18px;
+}
+
+/* Icon style */
+.team-icon {
+    width: 50px;
+    height: 50px;
+    margin: 0 5px;
+}
+
+.matchup-list {
+    width: 100%;
+    overflow-y: auto;
+    flex-grow: 1;
+    margin-top:10px;
+}
+
+.matchup-details {
+    background-color: #f5f5f5;
+    border-radius: 10px;
+    padding: 10px;
+    margin-bottom: 10px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* Marker icon styles */
+.matchup-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    background-color: white;
+    padding: 5px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.matchup-icon img {
+    width: 25px;
+    height: 25px;
+}
+
+.matchup-icon:hover {
+    transform: scale(1.1);
+    background-color: #f0f0f0;
+    cursor: pointer;
+}
+
+.matchup-icon:active {
+    background-color: #e0e0e0;
+}
+
+.matchup-symbol {
+    font-size: 20px;
+    margin: 0 5px;
+}
+
+.matchup-popup {
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+.matchup-popup h3 {
+    color: #004a7c;
+    margin-bottom: 5px;
+}
+
+.stadium-info, .location-info, .date-info {
+    margin-bottom: 5px;
+}
+
+.date-header {
+    text-align: center;
+    color: #004a7c;
+    font-size: 18px;
+    margin-top: 20px;
+    margin-bottom: 10px;
+}

@@ -13,8 +13,8 @@ function AdditionalDetailsPage() {
 		name: new URLSearchParams(window.location.search).get("name") // Get 'name' from URL
 	});
 
-	console.log("Email from query:", userData.email);
-	console.log("Name from query:", userData.name);
+	// console.log("Email from query:", userData.email);
+	// console.log("Name from query:", userData.name);
 
 	const [isFormValid, setIsFormValid] = useState(false);
 	const [errorMessage, setErrorMessage] = useState("");

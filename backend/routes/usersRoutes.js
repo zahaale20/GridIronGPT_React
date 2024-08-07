@@ -11,17 +11,17 @@ const {Pool} = require("pg");
 require("dotenv").config();
 
 const connectionString = process.env.DB_CONNECTION_STRING; // stores supabase db connection string, allowing us to connect to supabase db
-console.log("\nconnectionString: ", connectionString);
+// console.log("\nconnectionString: ", connectionString);
 
 const secretKey = process.env.JWT_SECRET_KEY; // stores jwt secret key
-console.log("\nsecretKey: ", secretKey);
+// console.log("\nsecretKey: ", secretKey);
 
 const oauth2Client = new google.auth.OAuth2(
 	process.env.REACT_APP_GOOGLE_CLIENT_ID,
 	process.env.GOOGLE_CLIENT_SECRET,
 	process.env.REACT_APP_BACKEND_LINK + "/users/auth/google/callback"
 );
-console.log("\noAuth2Client: ", oauth2Client);
+// console.log("\noAuth2Client: ", oauth2Client);
 
 // Create connection pool to connect to the database.
 function createConnection() {
@@ -102,7 +102,7 @@ router.post("/register", async (req, res) => {
 		phoneNumber: phoneNumber
 	} = req.body;
 
-    console.log("Received data:", { username, fullName, password, email, phoneNumber });
+    // console.log("Received data:", { username, fullName, password, email, phoneNumber });
 	
     try {
 		if (
@@ -116,9 +116,9 @@ router.post("/register", async (req, res) => {
 		} // ensure fields are filled, throw error if not
 		
         // Asynchronously hash the password using bcrypt library. 10 saltrounds = hash password 10 times. the more rounds the longer it takes to finish hashing
-		console.log("\npassword: ", password);
+		// console.log("\npassword: ", password);
         const hashedPassword = await bcryptjs.hash(password, 10); // await pauses execution of async function for bcrypt.hash to run
-        console.log("\nhashedPassword: ", hashedPassword);
+        // console.log("\nhashedPassword: ", hashedPassword);
 		const connection = createConnection();
 
 		// Insert user details into the users table.
@@ -127,7 +127,7 @@ router.post("/register", async (req, res) => {
 			"INSERT INTO users (username, \"fullName\", password, email, \"phoneNumber\") VALUES ($1, $2, $3, $4, $5)",
 			[username, fullName, hashedPassword, email, phoneNumber]
 		);
-        console.log("\n result: ", result);
+        // console.log("\n result: ", result);
 
 		await connection.end();
 		res.status(201).json({message: "User registered successfully"}); // HTTP 201 (Created) - led to creation of new resource
@@ -424,7 +424,7 @@ router.post("/forgot-password", async (req, res) => {
 			}
 		});
 
-        console.log("\ntransporter: ", transporter);
+        // console.log("\ntransporter: ", transporter);
 
 		const mailOptions = {
 			from: process.env.OUTLOOK_EMAIL, // Replace with your email
@@ -442,7 +442,7 @@ router.post("/forgot-password", async (req, res) => {
 					error: "Failed to send forgot password email"
 				});
 			} else {
-				console.log(info);
+				// console.log(info);
 				res.json({message: "Reset link sent to your email address"});
 			}
 		});

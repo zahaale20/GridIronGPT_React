@@ -101,7 +101,7 @@ function SignUpPage() {
 		if (isFormValid) {
 			try {
 				// Pre-registration check for existing username, email, or phone number
-				console.log("\nprocess.env.REACT_APP_BACKEND_LINK: ", process.env.REACT_APP_BACKEND_LINK);
+				// console.log("\nprocess.env.REACT_APP_BACKEND_LINK: ", process.env.REACT_APP_BACKEND_LINK);
 				const checkResponse = await axios.post(
 					process.env.REACT_APP_BACKEND_LINK + "/users/check",
 					{
@@ -111,7 +111,7 @@ function SignUpPage() {
 					}
 				);
 
-				console.log("\ncheckResponse: ", checkResponse);
+				// console.log("\ncheckResponse: ", checkResponse);
 
 				// Display specific error message based on the conflict
 				if (checkResponse.data.exists) {

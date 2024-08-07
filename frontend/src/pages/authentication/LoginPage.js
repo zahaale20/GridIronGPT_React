@@ -16,6 +16,7 @@ function LoginPage() {
 		identifier: "",
 		password: ""
 	});
+	
 	const [isFormValid, setIsFormValid] = useState(false);
 	const [errorMessage, setErrorMessage] = useState("");
 	const [passwordVisible, setPasswordVisible] = useState(false);
@@ -41,13 +42,12 @@ function LoginPage() {
 				identifier: credentials.identifier,
 				password: credentials.password
 			};
+
 			const response = await axios.post(
 				process.env.REACT_APP_BACKEND_LINK + "/users/login",
 				requestBody
 			);
-			console.log(
-				"jwt token name: " + process.env.REACT_APP_JWT_TOKEN_NAME
-			);
+			// console.log("jwt token name: " + process.env.REACT_APP_JWT_TOKEN_NAME);
 			localStorage.setItem(
 				process.env.REACT_APP_JWT_TOKEN_NAME,
 				response.data.token

@@ -5,8 +5,6 @@ require("dotenv").config();
 
 const connectionString = process.env.DB_CONNECTION_STRING;
 
-
-
 // Create connection pool to connect to the database.
 function createConnection() {
 	const pool = new Pool({

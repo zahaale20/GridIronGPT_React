@@ -8,7 +8,7 @@ import SignUpPage from "./pages/authentication/SignupPage";
 import LoginPage from "./pages/authentication/LoginPage";
 import ProfilePage from "./pages/authentication/ProfilePage";
 import HelpPage from "./pages/HelpPage";
-import TeamsPage from "./pages/TeamsPage.js";
+import TeamsPage from "./pages/teams/TeamsPage.js";
 import StandingsPage from "./pages/StandingsPage";
 import DepthChartsPage from "./pages/DepthChartsPage";
 import RankingsPage from "./pages/rankings/RankingsPage.js";
