@@ -2,7 +2,8 @@ const express = require("express");
 
 const usersRoutes = require("./routes/usersRoutes");
 const rankingsRoutes = require("./routes/rankingsRoutes");
-const teamsRoutes = require("./routes/teamsRoutes")
+const matchupsRoutes = require("./routes/matchupsRoutes")
+const openAIRoutes = require("./routes/openAIRoutes")
 
 require("dotenv").config();
 
@@ -15,7 +16,8 @@ app.use(express.json());
 
 app.use("/users", usersRoutes);
 app.use("/rankings", rankingsRoutes);
-app.use("/teams", teamsRoutes);
+app.use("/matchups", matchupsRoutes);
+app.use("/openai", openAIRoutes);
 
 app.listen(PORT, () => {
 	console.log(`\nServer is running on port ${PORT}`);

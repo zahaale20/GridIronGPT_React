@@ -1,0 +1,28 @@
+.win-probability-bar {
+    display: flex;
+    height: 30px;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    width: 100%; /* Ensure the bar takes full width */
+}
+
+.win-probability-segment {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: bold;
+    font-size: 14px;
+    transition: width 0.3s ease;
+    position: relative; /* Make position relative to ensure the label moves with the segment */
+    overflow: hidden; /* Hide any overflowing text */
+    white-space: nowrap; /* Prevent text from wrapping */
+}
+
+.win-probability-label {
+    position: relative; /* Remove absolute positioning */
+    z-index: 1; /* Ensure the label is above the background */
+    text-align: center; /* Center the text within the segment */
+    width: 100%; /* Take full width of the segment */
+}
