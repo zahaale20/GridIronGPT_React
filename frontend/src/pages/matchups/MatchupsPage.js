@@ -12,7 +12,7 @@ import StarRating from '../../components/StarRating'
 import WinProbabilityBar from '../../components/WinProbabilityBar';
 
 
-const TeamsPage = () => {
+const MatchupsPage = () => {
     const [matchups, setMatchups] = useState([]);
     const [errorMessage, setErrorMessage] = useState('');
     const [zoomLevel, setZoomLevel] = useState(5);
@@ -22,7 +22,7 @@ const TeamsPage = () => {
     useEffect(() => {
         const fetchMatchups = async () => {
             try {
-                const response = await axios.get(`${process.env.REACT_APP_BACKEND_LINK}/matchups?year=${year}&week=${week}`);
+                const response = await axios.get(`${process.env.REACT_APP_BACKEND_LINK}/matchups/matchups/?year=${year}&week=${week}`);
                 setMatchups(response.data);
                 setErrorMessage('');
             } catch (error) {
@@ -305,4 +305,4 @@ const TeamsPage = () => {
     );
 };
 
-export default TeamsPage;
+export default MatchupsPage;
