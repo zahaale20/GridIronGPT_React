@@ -54,7 +54,7 @@ router.get("/matchups", async (req, res) => {
 
       `, [year, week]);
 
-        console.log(rows);
+        // console.log(rows);
 
         res.status(200).send(rows);
         await connection.end();
