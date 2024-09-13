@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
+import { FaSearch } from 'react-icons/fa';
 import '../rankings/RankingsPage.css';
 import './DraftRankingsPage.css';
 import defaultHeadshot from '../../assets/default-headshot.png';
@@ -8,6 +9,7 @@ function DraftRankingsTable({ onSelectPlayer, selectedPlayerIds, currentDrafting
     const [rankings, setRankings] = useState([]);
     const [allRankings, setAllRankings] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
+    const [searchInput, setSearchInput] = useState('');
     const [selectedPosition, setSelectedPosition] = useState('ALL');
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -21,9 +23,33 @@ function DraftRankingsTable({ onSelectPlayer, selectedPlayerIds, currentDrafting
         return name.replace('PASS_', '').replace('RUSH_', '').replace('REC_', '').replace('FNTSY_', '');
     };
 
-    const handleSearchChange = (event) => {
-        setSearchTerm(event.target.value);
+    const handleSearchInputChange = (event) => {
+        setSearchInput(event.target.value);
     };
+
+    const debouncedSearch = useDebounce(() => {
+        setSearchTerm(searchInput);
+    }, 300);
+
+    const handleSearch = () => {
+        debouncedSearch();
+    };
+
+    function useDebounce(value, delay) {
+        const [debouncedValue, setDebouncedValue] = useState(value);
+    
+        useEffect(() => {
+            const handler = setTimeout(() => {
+                setDebouncedValue(value);
+            }, delay);
+    
+            return () => {
+                clearTimeout(handler);
+            };
+        }, [value, delay]); // Only re-call effect if value or delay changes
+    
+        return debouncedValue;
+    }
 
     const handlePositionChange = (event) => {
         setSelectedPosition(event.target.value);
@@ -117,9 +143,12 @@ function DraftRankingsTable({ onSelectPlayer, selectedPlayerIds, currentDrafting
                     type="text"
                     placeholder="Search players..."
                     className="search-input"
-                    value={searchTerm}
-                    onChange={handleSearchChange}
+                    value={searchInput}
+                    onChange={handleSearchInputChange}
                 />
+                <button className="search-button" onClick={handleSearch}>
+                    <FaSearch />
+                </button>
                 <div className="draft-filter-subcontainer">
                     {['ALL', 'QB', 'WR', 'RB', 'TE', 'FLEX', 'DST', 'K'].map((position) => (
                         <label key={position} className="checkbox-label">

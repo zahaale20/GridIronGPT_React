@@ -25,31 +25,26 @@ const handleSelectPlayer = (player) => {
     const handleDeselectPlayer = (playerId) => {
         console.log("Deselecting player with ID:", playerId);
         
-        // Find the index of the player to be deselected
         const playerToDeselectIndex = selectedPlayers.findIndex(player => player && player.id === playerId);
         
         if (playerToDeselectIndex === -1) {
             console.log("Player not found");
-            return; // If player ID not found, exit the function
+            return;
         }
         
-        // Prepare to update the selected players array and bye weeks
         const newSelectedPlayers = [...selectedPlayers];
         const playerToDeselect = newSelectedPlayers[playerToDeselectIndex];
         newSelectedPlayers[playerToDeselectIndex] = null;
         
-        // Update the team bye weeks
         const updatedByeWeeks = { ...teamByeWeeks };
         console.log("Before: ", updatedByeWeeks)
         const teamIndex = teamsDraftOrder[playerToDeselectIndex];
         const positionByes = updatedByeWeeks[teamIndex] && updatedByeWeeks[teamIndex][playerToDeselect.position];
         
         if (positionByes) {
-            // Specifically remove only the matching bye week of the deselected player
             const byeIndex = positionByes.indexOf(playerToDeselect.bye);
             if (byeIndex > -1) {
                 positionByes.splice(byeIndex, 1);
-                // If there are no more byes left for this position, delete the position key
                 if (positionByes.length === 0) {
                     delete updatedByeWeeks[teamIndex][playerToDeselect.position];
                 }
@@ -58,7 +53,6 @@ const handleSelectPlayer = (player) => {
         
         console.log(`Updated bye weeks for team ${teamIndex}:`, updatedByeWeeks[teamIndex]);
         
-        // Set the updated state
         setSelectedPlayers(newSelectedPlayers);
         setTeamByeWeeks(updatedByeWeeks);
     };
