@@ -319,6 +319,33 @@
 }
 
 
+
+/* Container for the entire table */
+.rankings-container {
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden;
+    width: 100%;
+}
+
+/* Header and rows container */
+.header-and-rows {
+    display: flex;
+}
+
+/* Fixed columns for Rank and Player */
+.fixed-columns {
+    flex-shrink: 0;
+    background-color: white;
+}
+
+.fixed-column-container {
+    min-width: 400px; /* Adjust based on content size */
+    overflow-y: auto; /* Allow vertical scrolling */
+    float: left; /* Optional: depending on layout requirements */
+    height: 500px; /* Adjust based on viewport or container size */
+}
+
 .draft-player-header {
     min-width:350px;
     height: 38px;
@@ -328,8 +355,38 @@
     border-left: 1px solid #ffffff;
 }
 
+.draft-stats-header {
+    height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-left: 10px;
+    border-left: 1px solid #ffffff;
+}
+
 .draft-player-column {
+    z-index: 2;
     min-width: 350px;
     display: flex;
     align-items: center;
+}
+
+.draft-stat-header, .draft-stat-column {
+    min-width: 80px;
+    text-align: center;
+}
+
+.draft-stat-column {
+    font-size: 14px;
+    font-weight: bold;
+    color: #5d5c5c;
+}
+
+.draft-stat-column-label {
+    display: block;
+    font-size: 9px;
+    color: #858585;
+    margin-top: -2px;
+    text-align: center;
+    font-weight: normal;
 }

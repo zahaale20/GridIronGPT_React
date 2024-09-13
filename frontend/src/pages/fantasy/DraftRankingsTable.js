@@ -15,8 +15,40 @@ function DraftRankingsTable({ onSelectPlayer, selectedPlayerIds, currentDrafting
     const [error, setError] = useState(null);
 
     const columnGroups = {
-        'Draft': ['BYE', 'ECR', 'SD', 'BEST', 'WORST'],
-        'Fantasy': ['PROJ', '2024', '2023']
+        'Draft': [
+            'BYE', 
+            'ECR', 
+            'SD', 
+            'BEST', 
+            'WORST'
+        ],
+        'Projections': [
+            'projected_completion_percentage',
+            'projected_passing_yds',
+            'projected_passing_tds',
+            'projected_rushing_attempts',
+            'projected_rushing_yds',
+            'projected_rushing_tds',
+            'projected_receiving_rec',
+            'projected_receiving_yds',
+            'projected_receiving_tds',
+            'projected_sack',
+            'projected_int',
+            'projected_fr',
+            'projected_ff',
+            'projected_td',
+            'projected_safety',
+            'projected_pa',
+            'projected_yds_agn',
+            'projected_fg',
+            'projected_fga',
+            'projected_xpt',
+            'projected_fpts'
+        ],
+        'Fantasy': [
+            '2024', 
+            '2023'
+        ]
     };
 
     const simplifyColumnName = (name) => {
@@ -113,27 +145,26 @@ function DraftRankingsTable({ onSelectPlayer, selectedPlayerIds, currentDrafting
         .map(player => player.id);
 
     const top3ProjPlayers = [...filteredRankings]
-        .sort((a, b) => b.fntsy_proj - a.fntsy_proj)
+        .sort((a, b) => b.projected_fpts - a.projected_fpts)
         .slice(0, 3)
         .map(player => player.id);
 
     const top32024Players = [...filteredRankings]
-        .sort((a, b) => b.fntsy_2024 - a.fntsy_2024)
+        .sort((a, b) => b.fpts_2024 - a.fpts_2024)
         .slice(0, 3)
         .map(player => player.id);
 
     const top32023Players = [...filteredRankings]
-        .sort((a, b) => b.fntsy_2023 - a.fntsy_2023)
+        .sort((a, b) => b.ffpts_2023 - a.fpts_2023)
         .slice(0, 3)
         .map(player => player.id);
 
     const rookies = [...filteredRankings]
         .filter(player => 
-            (player.fntsy_2023 === 0 || player.fntsy_2023 === null) &&
+            (player.fpts_2023 === 0 || player.fpts_2023 === null) &&
             player.position !== 'DST' && player.player_name !== 'Aaron Rodgers'
         )
         .map(player => player.id);
-
 
     const headersAndFilters = (
         <>
@@ -178,22 +209,36 @@ function DraftRankingsTable({ onSelectPlayer, selectedPlayerIds, currentDrafting
                 <div className="column-headers">
                     <div className="rank-header header-text">RANK</div>
                     <div className="draft-player-header header-text">PLAYER</div>
-                    {Object.entries(columnGroups).map(([group, stats]) => (
-                        <div key={group} className="stats-group">
-                            <div className="header-text group-text">{group}</div>
-                            <div className="stat-headers-container">
-                                {stats.map(stat => (
-                                    <div key={stat} className="stat-header header-text">
-                                        {simplifyColumnName(stat)}
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
-                    ))}
+                    <div className="draft-stats-header header-text">STATS</div>
                 </div>
             </div>
         </>
     );
+
+    const renderStatColumn = (value, label) => {
+        // Always render these specific fields even if their values are zero or null
+        const alwaysRender = ['Proj FPTS', '2023 Fpts', '2024 Fpts'];
+    
+        // Check if the current label is one of the special cases that should always be rendered
+        if (alwaysRender.includes(label)) {
+            return (
+                <div className="draft-stat-column">
+                    {value}<span className="draft-stat-column-label">{label}</span>
+                </div>
+            );
+        }
+    
+        // For all other labels, continue checking for various forms of "zero" values
+        if (value !== 0 && value !== null && value !== '' && value !== undefined && value !== '0' && value !== 0.0) {
+            return (
+                <div className="draft-stat-column">
+                    {value}<span className="draft-stat-column-label">{label}</span>
+                </div>
+            );
+        }
+    
+        return null; // Do not render the column if the value is effectively "zero"
+    };
 
     if (loading) {
         return (
@@ -257,14 +302,32 @@ function DraftRankingsTable({ onSelectPlayer, selectedPlayerIds, currentDrafting
                                     <div className="player-subtitle">{item.team} - {item.position}</div>
                                 </div>
                             </div>
-                            <div className="stat-column">{item.bye}</div>
-                            <div className="stat-column">{item.ecr}</div>
-                            <div className="stat-column">{item.sd}</div>
-                            <div className="stat-column">{item.best}</div>
-                            <div className="stat-column">{item.worst}</div>
-                            <div className="stat-column">{item.fntsy_proj}</div>
-                            <div className="stat-column">{item.fntsy_2024}</div>
-                            <div className="stat-column">{item.fntsy_2023}</div>
+                            <div className="draft-stat-column">{item.draft_bye}<span className="draft-stat-column-label">BYE</span></div>
+                            <div className="draft-stat-column">{item.draft_ecr}<span className="draft-stat-column-label">ECR</span></div>
+                            <div className="draft-stat-column">{item.elo}<span className="draft-stat-column-label">ELO</span></div>
+                            {renderStatColumn(item.projected_completion_percentage, "Proj Cmp %")}
+                            {renderStatColumn(item.projected_passing_yds, "Proj Pass Yds")}
+                            {renderStatColumn(item.projected_passing_tds, "Proj Pass TDs")}
+                            {renderStatColumn(item.projected_rushing_attempts, "Proj Att")}
+                            {renderStatColumn(item.projected_rushing_yds, "Proj Rush Yds")}
+                            {renderStatColumn(item.projected_rushing_tds, "Proj Rush TDs")}
+                            {renderStatColumn(item.projected_receiving_rec, "Proj Rec")}
+                            {renderStatColumn(item.projected_receiving_yds, "Proj Rec Yds")}
+                            {renderStatColumn(item.projected_receiving_tds, "Proj Rec TDs")}
+                            {renderStatColumn(item.projected_sack, "Proj Sacks")}
+                            {renderStatColumn(item.projected_int, "Proj INTs")}
+                            {renderStatColumn(item.projected_fr, "Proj Fum Rec")}
+                            {renderStatColumn(item.projected_ff, "Proj Fum Frc")}
+                            {renderStatColumn(item.projected_td, "Proj TDs")}
+                            {renderStatColumn(item.projected_safety, "Proj Safety")}
+                            {renderStatColumn(item.projected_pa, "Proj Pts Alwd")}
+                            {renderStatColumn(item.projected_yds_agn, "Proj Yds Agnst")}
+                            {renderStatColumn(item.projected_fg, "Proj FG")}
+                            {renderStatColumn(item.projected_fga, "Proj FGA")}
+                            {renderStatColumn(item.projected_xpt, "Proj XPT")}
+                            {renderStatColumn(item.projected_fpts, "Proj FPTS")}
+                            {renderStatColumn(item.fpts_2024, "2024 Fpts")}
+                            {renderStatColumn(item.fpts_2023, "2023 Fpts")}
                         </div>
                     ))}
                 </div>
