@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import PlayerRankingsTable from './ResultsDisplayTable';
+import ResultsDisplayTable from './ResultsDisplayTable';
 import './ResultsDisplay.css';
 import '../../rankings/RankingsPage.css';
 
@@ -27,12 +27,10 @@ function ResultsDisplay({ userInput, sqlQuery }) {
                 console.error("No valid SQL query provided, skipping fetch.");
                 return;
             }
-            console.log("Cleaned Query: ", cleanedQuery);
 
             setLoading(true);
             try {
                 const response = await axios.post(`${process.env.REACT_APP_BACKEND_LINK}/openai/execute-query`, { sqlQuery: cleanedQuery });
-                console.log("Initial data fetched:", response.data);
 
                 setPlayers(response.data);
                 setError(null);
@@ -50,10 +48,10 @@ function ResultsDisplay({ userInput, sqlQuery }) {
     return (
         <div className="rankings-container" style={{ marginTop: '20px' }}>
             <div className="search-result-container">
-                <p className="search-result-text">Query: "{userInput}"</p>
+                <p className="search-result-text">"{userInput}"</p>
             </div>
 
-            <PlayerRankingsTable
+            <ResultsDisplayTable
                 players={players || []}
                 loading={loading}
                 error={error}

@@ -11,7 +11,6 @@ function SearchBar({ onSearchTerm }) {
 
   const handleSearchSubmit = (event) => {
     event.preventDefault();
-    console.log('Search submitted with term:', searchTerm); // Log the search term when submitted
     onSearchTerm(searchTerm);
   };
 

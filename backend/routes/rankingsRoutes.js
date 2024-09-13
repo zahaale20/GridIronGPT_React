@@ -25,7 +25,7 @@ router.get("/top-players/all", async (req, res) => {
         const { rows } = await connection.query(
             `
             select
-                p.player_name as player_name,
+                p.player_display_name as player_name,
                 p.position as position,
                 p.headshot_url as headshot_url,
                 t.initials as team_initials,
@@ -51,7 +51,7 @@ router.get("/top-players/all", async (req, res) => {
                 and p.season = $1
                 and p.season_type = 'REG'
             group by
-                p.player_name,
+                p.player_display_name,
                 p.position,
                 p.headshot_url,
                 t.initials
@@ -80,7 +80,7 @@ router.get("/top-players/qb", async (req, res) => {
         const { rows } = await connection.query(
             `
             select
-                p.player_name as player_name,
+                p.player_display_name as player_name,
                 p.position as position,
                 p.headshot_url as headshot_url,
                 t.initials as team_initials,
@@ -102,11 +102,11 @@ router.get("/top-players/qb", async (req, res) => {
                 offense_stats p
                 join teams t on p.recent_team = t."teamID"
             where
-                p.position = 'QB'
+                (p.position = 'QB')
                 and p.season = $1
                 and p.season_type = 'REG'
             group by
-                p.player_name,
+                p.player_display_name,
                 p.position,
                 p.headshot_url,
                 t.initials
@@ -135,7 +135,7 @@ router.get("/top-players/wr", async (req, res) => {
         const { rows } = await connection.query(
             `
             select
-                p.player_name as player_name,
+                p.player_display_name as player_name,
                 p.position as position,
                 p.headshot_url as headshot_url,
                 t.initials as team_initials,
@@ -157,11 +157,11 @@ router.get("/top-players/wr", async (req, res) => {
                 offense_stats p
                 join teams t on p.recent_team = t."teamID"
             where
-                p.position = 'WR'
+                (p.position = 'WR')
                 and p.season = $1
                 and p.season_type = 'REG'
             group by
-                p.player_name,
+                p.player_display_name,
                 p.position,
                 p.headshot_url,
                 t.initials
@@ -171,15 +171,15 @@ router.get("/top-players/wr", async (req, res) => {
         );
 
         res.status(200).send(rows);
-        await connection.end();
     } catch (error) {
-        console.error("An error occurred while fetching the top WRs:", error);
-        res.status(500).send("An error occurred while fetching the top WRs");
+        console.error("An error occurred while fetching the top QBs:", error);
+        res.status(500).send("An error occurred while fetching the top QBs");
+    } finally {
+        await connection.end();
     }
 });
 
 router.get("/top-players/rb", async (req, res) => {
-
     const connection = createConnection();
 
     const { sort = 'FNTSY_FPTS', order = 'desc', year = 2023, scoring = 'PPR' } = req.query;
@@ -190,7 +190,7 @@ router.get("/top-players/rb", async (req, res) => {
         const { rows } = await connection.query(
             `
             select
-                p.player_name as player_name,
+                p.player_display_name as player_name,
                 p.position as position,
                 p.headshot_url as headshot_url,
                 t.initials as team_initials,
@@ -212,11 +212,11 @@ router.get("/top-players/rb", async (req, res) => {
                 offense_stats p
                 join teams t on p.recent_team = t."teamID"
             where
-                p.position = 'RB'
+                (p.position = 'RB')
                 and p.season = $1
                 and p.season_type = 'REG'
             group by
-                p.player_name,
+                p.player_display_name,
                 p.position,
                 p.headshot_url,
                 t.initials
@@ -226,15 +226,15 @@ router.get("/top-players/rb", async (req, res) => {
         );
 
         res.status(200).send(rows);
-        await connection.end();
     } catch (error) {
-        console.error("An error occurred while fetching the top rbs:", error);
-        res.status(500).send("An error occurred while fetching the top rbs");
+        console.error("An error occurred while fetching the top QBs:", error);
+        res.status(500).send("An error occurred while fetching the top QBs");
+    } finally {
+        await connection.end();
     }
 });
 
 router.get("/top-players/te", async (req, res) => {
-
     const connection = createConnection();
 
     const { sort = 'FNTSY_FPTS', order = 'desc', year = 2023, scoring = 'PPR' } = req.query;
@@ -245,7 +245,7 @@ router.get("/top-players/te", async (req, res) => {
         const { rows } = await connection.query(
             `
             select
-                p.player_name as player_name,
+                p.player_display_name as player_name,
                 p.position as position,
                 p.headshot_url as headshot_url,
                 t.initials as team_initials,
@@ -267,11 +267,11 @@ router.get("/top-players/te", async (req, res) => {
                 offense_stats p
                 join teams t on p.recent_team = t."teamID"
             where
-                p.position = 'TE'
+                (p.position = 'TE')
                 and p.season = $1
                 and p.season_type = 'REG'
             group by
-                p.player_name,
+                p.player_display_name,
                 p.position,
                 p.headshot_url,
                 t.initials
@@ -281,10 +281,11 @@ router.get("/top-players/te", async (req, res) => {
         );
 
         res.status(200).send(rows);
-        await connection.end();
     } catch (error) {
-        console.error("An error occurred while fetching the top tes:", error);
-        res.status(500).send("An error occurred while fetching the top tes");
+        console.error("An error occurred while fetching the top QBs:", error);
+        res.status(500).send("An error occurred while fetching the top QBs");
+    } finally {
+        await connection.end();
     }
 });
 
@@ -340,7 +341,7 @@ router.get("/top-teams/offense", async (req, res) => {
 router.get("/top-teams/defense", async (req, res) => {
     const connection = createConnection();
 
-    const { year = 2023, scoring = 'PPR' } = req.query;
+    const { sort = 'DEF_FPTS', order = 'desc', year = 2023, scoring = 'PPR' } = req.query;
 
     const pointsColumn = scoring === 'Standard' ? 'fantasy_points' : 'fantasy_points_ppr';
 
@@ -351,7 +352,7 @@ router.get("/top-teams/defense", async (req, res) => {
                 final_stats.NAME,
                 final_stats.IMAGE_URL,
                 SUM(final_stats.DEF_FPTS) AS DEF_FPTS,
-                ROUND((SUM(final_stats.DEF_FPTS)/17)::numeric, 1) AS "DEF_FPTS/GM",
+                ROUND((SUM(final_stats.DEF_FPTS)/17)::numeric, 1) AS DEF_AVG_FPTS,
                 SUM(final_stats.DEF_TD) AS DEF_TD,
                 SUM(final_stats.DEF_INT) AS DEF_INT,
                 SUM(final_stats.DEF_SCK) AS DEF_SCK,
@@ -360,7 +361,7 @@ router.get("/top-teams/defense", async (req, res) => {
                 SUM(final_stats.DEF_SFTY) AS DEF_SFTY,
                 SUM(final_stats.DEF_TCKL) AS DEF_TCKL,
                 SUM(final_stats.OPP_FPTS) AS OPP_FPTS,
-                ROUND((SUM(final_stats.OPP_FPTS)/17)::numeric, 1) AS "OPP_FPTS/GM",
+                ROUND((SUM(final_stats.OPP_FPTS)/17)::numeric, 1) AS OPP_AVG_FPTS,
                 SUM(final_stats.OPP_TD) AS OPP_TD,
                 SUM(final_stats.OPP_PA) AS OPP_PA,
                 SUM(final_stats.OPP_RUSHYA + final_stats.OPP_RECYA) AS OPP_YA
@@ -447,7 +448,7 @@ router.get("/top-teams/defense", async (req, res) => {
             GROUP BY
                 final_stats.TEAM_ID, final_stats.NAME, final_stats.IMAGE_URL
             ORDER BY 
-                DEF_FPTS DESC;    
+            ${sort} ${order === 'asc' ? 'ASC' : 'DESC'}
         `, [year]);
 
         res.status(200).json(rows);

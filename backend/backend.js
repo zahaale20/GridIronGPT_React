@@ -4,6 +4,7 @@ const usersRoutes = require("./routes/usersRoutes");
 const rankingsRoutes = require("./routes/rankingsRoutes");
 const matchupsRoutes = require("./routes/matchupsRoutes")
 const openAIRoutes = require("./routes/openAIRoutes")
+const fantasyRoutes = require("./routes/fantasyRoutes")
 
 require("dotenv").config();
 
@@ -18,6 +19,7 @@ app.use("/users", usersRoutes);
 app.use("/rankings", rankingsRoutes);
 app.use("/matchups", matchupsRoutes);
 app.use("/openai", openAIRoutes);
+app.use("/fantasy", fantasyRoutes);
 
 app.listen(PORT, () => {
 	console.log(`\nServer is running on port ${PORT}`);

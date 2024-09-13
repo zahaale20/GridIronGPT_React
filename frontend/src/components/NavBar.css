@@ -33,8 +33,8 @@
 }
 
 .icon-image {
-    height: 22px; /* Fixed size for icons */
-    width: 22px;  /* Maintains aspect ratio */
+    height: 22px;
+    width: 22px;
     cursor: pointer;
 }
 
@@ -64,8 +64,8 @@
 }
 
 .logo-image {
-    height: auto; /* Allows the height to scale with width */
-    width: 200px; /* Fixed width prevents shrinking */
+    height: auto;
+    width: 200px;
     transition: transform 0.3s ease-in-out;
 }
 

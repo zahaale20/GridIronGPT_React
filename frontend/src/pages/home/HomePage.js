@@ -13,7 +13,6 @@ function HomePage() {
     const fetchInitialData = async () => {
       try {
         const response = await axios.get(`${process.env.REACT_APP_BACKEND_LINK}/openai/initialize`);
-        console.log("Initial data fetched:", response.data);
 
         // Set the SQL query to trigger the data fetching in ResultsDisplay
         const initialQuery = `
@@ -58,7 +57,6 @@ function HomePage() {
   }, []);
 
   const handleResults = async (searchTerm) => {
-    console.log("Search submitted with term:", searchTerm);
     setUserInput(searchTerm);
 
     try {

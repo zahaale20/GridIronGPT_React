@@ -14,6 +14,7 @@ import ResetPasswordPage from "./pages/authentication/ResetPasswordPage";
 
 import RankingsPage from "./pages/rankings/RankingsPage.js";
 import MatchupsPage from "./pages/matchups/MatchupsPage.js";
+import DraftRankingsPage from "./pages/fantasy/DraftRankingsPage.js";
 
 
 function App() {
@@ -31,6 +32,7 @@ function App() {
           <Route path="/forgot-password" element={<ForgotPasswordPage/>} />
           <Route path="/reset-password" element={<ResetPasswordPage />} />
 
+          <Route path="/fantasy" element={<DraftRankingsPage/>} />
           <Route path="/rankings" element={<RankingsPage/>} />
           <Route path="/matchups" element={<MatchupsPage/>} />
 

@@ -225,9 +225,6 @@ const MatchupsPage = () => {
                                 const awayWinProbability = calculateWinProbability(matchup.awayteamoverallrating, matchup.hometeamoverallrating);
                                 const homeWinProbability = calculateWinProbability(matchup.hometeamoverallrating, matchup.awayteamoverallrating);
 
-                                console.log("Away Probability:", awayWinProbability);
-                                console.log("Home Probability:", homeWinProbability);
-
                                 return (
                                     <div key={matchup.matchupID} className="matchup-details">
                                         <div className="time-box">

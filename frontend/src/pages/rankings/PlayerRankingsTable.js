@@ -28,8 +28,8 @@ const PlayerRankingsTable = ({
                     <label className="filter-label" htmlFor="year-select">Year</label>
                     <select id="year-select" onChange={handlePlayerYearChange} value={selectedYear}>
                         {[...Array(25)].map((_, i) => (
-                            <option key={i} value={2023 - i}>
-                                {2023 - i}
+                            <option key={i} value={2024 - i}>
+                                {2024 - i}
                             </option>
                         ))}
                     </select>
@@ -57,6 +57,7 @@ const PlayerRankingsTable = ({
                     </select>
                 </div>
             </div>
+            
             <div className="column-headers">
                 <div className="rank-header header-text">RANK</div>
                 <div className="player-header header-text">PLAYER</div>

@@ -3,7 +3,7 @@ import './WinProbabilityBar.css';
 
 const WinProbabilityBar = ({ homeProbability, awayProbability, homeColor, awayColor }) => {
     
-    console.log("Rendering WinProbabilityBar with:", { homeProbability, awayProbability });
+    //console.log("Rendering WinProbabilityBar with:", { homeProbability, awayProbability });
 
     return (
         <div className="win-probability-bar">

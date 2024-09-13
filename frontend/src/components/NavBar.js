@@ -50,7 +50,7 @@ function NavBar() {
             </div>
             <div className="bottom-row">
                 <button className="nav-button" onClick={() => handleNavigation('/')} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>HOME</button>
-                <button className="nav-button" onClick={() => handleNavigation('/fantasy-draft')} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>FANTASY DRAFT</button>
+                <button className="nav-button" onClick={() => handleNavigation('/fantasy')} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>FANTASY DRAFT</button>
                 <button className="nav-button" onClick={() => handleNavigation('/rankings')} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>RANKINGS</button>
                 <button className="nav-button" onClick={() => handleNavigation('/matchups')} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>MATCHUPS</button>
             </div>

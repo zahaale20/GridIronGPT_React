@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import defaultTeamIcon from '../../assets/default-team-icon.png';
 
 
@@ -10,8 +10,8 @@ const offenseColumnGroups = {
 };
 
 const defenseColumnGroups = {
-    'Defense': ['DEF_FPTS', 'DEF_FPTS/GM', 'DEF_TD', 'DEF_INT', 'DEF_SCK', 'DEF_QB_HITS', 'DEF_FR', 'DEF_SFTY', 'DEF_TCKL'],
-    'Opponent': ['OPP_FPTS', 'OPP_FPTS/GM', 'OPP_TD', 'OPP_PA', 'OPP_YA' ]
+    'Defense': ['DEF_FPTS', 'DEF_AVG_FPTS', 'DEF_TD', 'DEF_INT', 'DEF_SCK', 'DEF_QB_HITS', 'DEF_FR', 'DEF_SFTY', 'DEF_TCKL'],
+    'Opponent': ['OPP_FPTS', 'OPP_AVG_FPTS', 'OPP_TD', 'OPP_PA', 'OPP_YA' ]
 };
 
 const simplifyColumnName = (name) => {
@@ -40,8 +40,8 @@ const TeamRankingsTable = ({
                         <label className="filter-label" htmlFor="year-select">Year</label>
                         <select id="year-select" onChange={handleTeamYearChange} value={selectedYear}>
                             {[...Array(25)].map((_, i) => (
-                                <option key={i} value={2023 - i}>
-                                    {2023 - i}
+                                <option key={i} value={2024 - i}>
+                                    {2024 - i}
                                 </option>
                             ))}
                         </select>

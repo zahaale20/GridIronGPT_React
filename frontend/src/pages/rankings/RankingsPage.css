@@ -1,5 +1,4 @@
 
-/* Other CSS remains the same */
 .rankings-page {
     display: flex;
     flex-direction: column;
@@ -7,7 +6,6 @@
     width: 100%
 }
 
-/* Container for the vertical stacking of tables */
 .vertical-scroll-container {
     margin-top: 100px;
     align-items: center;
@@ -18,35 +16,31 @@
     display: flex;
     flex-direction: column;
     min-height: 600px;
-    max-height: 600px; /* Limit height to 600px */
-    width: 100%; /* Ensure it takes full width */
+    max-height: 600px;
+    width: 100%;
     margin-bottom: 100px;
 }
 
 .rankings-header-container {
     background-color: white;
-    z-index: 1; /* Keeps the header above the scrollable content */
+    z-index: 1;
     position: sticky;
-    top: 0; /* Fixes the header at the top */
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Optional: adds a shadow for better separation */
+    top: 0;
 }
 
-
-/* Table container that is scrollable */
 .rankings-table {
-    overflow-y: auto;  /* Enables vertical scrolling */
-    max-height: 450px; /* Set a maximum height after which the container should scroll */
-    width: 100%;       /* Adjust as necessary for your layout */
+    overflow-y: auto;
+    max-height: 450px;
+    width: 100%;
     border: 1px solid #ccc;
 }
 
-/* Styling for other elements remains the same */
 .rankings-title-container {
     padding-top: 20px;
 }
 
 .rankings-title, .rankings-subtitle {
-    margin: 0; /* Remove default margins */
+    margin: 0;
 }
 
 .rankings-title {
@@ -55,33 +49,34 @@
 }
 
 .filters-container {
+    width: 660px;
     display: flex;
+    gap: 20px;
     padding-bottom: 20px;
 }
 
 .filter-subcontainer {
-    margin-right: 20px;
+    display: flex;
+    flex-direction: column;
     width: 200px;
 }
 
 .filter-label {
-    font-size: 14px;
-    margin-bottom: 0px; 
+    font-size: 12px;
 }
 
 select {
-    width: 100%; /* Full width of container */
+    width: 100%; /* Set a fixed width for select boxes */
     padding: 6px;
-    border: 1px solid #ccc; /* Subtle border */
-    border-radius: 4px; /* Rounded corners */
-    background-color: white; /* Ensure background is white */
-    box-shadow: inset 0 1px 2px rgba(0,0,0,0.1); /* Inner shadow for depth */
-    cursor: pointer; /* Cursor to indicate it's selectable */
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: white;
+    cursor: pointer;
     font-size: 14px;
 }
 
 select:hover {
-    border-color: #888; /* Change border on hover for feedback */
+    border-color: #888; /* Visual feedback on hover */
 }
 
 .player-row, .column-headers {
@@ -92,6 +87,11 @@ select:hover {
 .player-row {
     height: 50px;
     border-bottom: 1px solid #ddd;
+}
+
+.player-row:hover {
+    cursor: pointer;
+    background-color: rgb(224, 222, 222)
 }
 
 .column-headers {

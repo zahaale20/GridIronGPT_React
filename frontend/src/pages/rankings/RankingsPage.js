@@ -10,8 +10,8 @@ function RankingsPage() {
     const [teamCategories, setTeamCategories] = useState({Offense: [], Defense: [] });
     const [selectedPosition, setSelectedPosition] = useState('ALL');
     const [selectedTeamCategory, setSelectedTeamCategory] = useState('Offense');
-    const [selectedPlayerYear, setSelectedPlayerYear] = useState(2023);
-    const [selectedTeamYear, setSelectedTeamYear] = useState(2023);
+    const [selectedPlayerYear, setSelectedPlayerYear] = useState(2024);
+    const [selectedTeamYear, setSelectedTeamYear] = useState(2024);
     const [selectedScoring, setSelectedScoring] = useState('PPR');
     const [columns, setColumns] = useState([]);
     const [teams, setTeams] = useState([]);
@@ -20,7 +20,7 @@ function RankingsPage() {
     const [sortKey, setSortKey] = useState('FNTSY_FPTS');
     const [sortOrder, setSortOrder] = useState('desc');
     const [teamSortKey, setTeamSortKey] = useState('FNTSY_FPTS');
-const [teamSortOrder, setTeamSortOrder] = useState('desc');
+    const [teamSortOrder, setTeamSortOrder] = useState('desc');
 
     const columnGroups = {
         'Passing': ['PASS_COMP', 'PASS_ATT', 'PASS_YDS', 'PASS_TD', 'PASS_INT'],
@@ -46,7 +46,14 @@ const [teamSortOrder, setTeamSortOrder] = useState('desc');
     };
 
     const handleTeamCategoryChange = (event) => {
-        setSelectedTeamCategory(event.target.value);
+        const newCategory = event.target.value;
+        setSelectedTeamCategory(newCategory);
+        
+        if (newCategory === 'Defense') {
+            setTeamSortKey('DEF_FPTS');
+        } else {
+            setTeamSortKey('FNTSY_FPTS');
+        }
     };
 
     const handleScoringChange = (event) => {
@@ -80,6 +87,7 @@ const [teamSortOrder, setTeamSortOrder] = useState('desc');
                 const response = await axios.get(`${process.env.REACT_APP_BACKEND_LINK}/rankings/top-players/${selectedPosition}`, {
                     params: { sort: encodedSortKey, order: sortOrder, year: selectedPlayerYear, scoring: selectedScoring }
                 });
+
                 setPlayers(prevPlayers => ({
                     ...prevPlayers,
                     [selectedPosition]: response.data
@@ -102,8 +110,9 @@ const [teamSortOrder, setTeamSortOrder] = useState('desc');
             setLoading(true);
             setError(null);
             try {
+                const encodedTeamSortKey = encodeURIComponent(teamSortKey);
                 const response = await axios.get(`${process.env.REACT_APP_BACKEND_LINK}/rankings/top-teams/${selectedTeamCategory.toLowerCase()}`, {
-                    params: { year: selectedTeamYear, scoring: selectedScoring }
+                    params: { sort: encodedTeamSortKey, order: teamSortOrder, year: selectedTeamYear, scoring: selectedScoring }
                 });
                 setTeamCategories({
                     ...teamCategories,
@@ -118,7 +127,7 @@ const [teamSortOrder, setTeamSortOrder] = useState('desc');
         };
 
         fetchTeams();
-    }, [selectedTeamCategory, selectedTeamYear, selectedScoring]);
+    }, [selectedTeamCategory, selectedTeamYear, selectedScoring, teamSortKey, teamSortOrder,]);
 
     return (
         <div className="rankings-page">
@@ -154,7 +163,7 @@ const [teamSortOrder, setTeamSortOrder] = useState('desc');
                             handleTeamCategoryChange={handleTeamCategoryChange}
                             handleScoringChange={handleScoringChange}
                             handleSort={handleTeamSort}
-                            sortOrder={teamSortOrder} // Use teamSortOrder for Team Rankings
+                            sortOrder={teamSortOrder}
                             loading={loading}
                             error={error}
                             columnGroups={columnGroups}

@@ -1,0 +1,335 @@
+.fantasy-rankings-container {
+    display: flex;
+    flex-direction: column;
+    max-width: 1200px;
+    margin: auto;
+    margin-top: 100px;
+    margin-bottom: 60px;
+    overflow: hidden;
+}
+
+.draft-rankings-table {
+    flex: 3;
+    overflow-y: auto;
+}
+
+.horizontal-scroll-container {
+    display: flex;
+    overflow-x: auto;
+    overflow-y: auto;
+    width: 100%;
+    padding-bottom: 10px;
+    min-height: 480px;
+}
+
+.vertical-scroll-container {
+    display: flex;
+    overflow-y: auto;
+    margin-bottom: 20px;
+    flex: 1;
+    min-height: 200px;
+}
+
+.team-headers-container {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+}
+
+.draft-column, .player-details, .empty-slot{
+    min-width: 300px;
+    width: 300px;
+    min-height: 45px;
+    height: 45px;
+    margin-right: 5px;
+}
+
+.draft-column {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.draft-column-header {
+    padding: 1px 0;
+    text-align: center;
+    font-weight: bold;
+    font-size: 12px;
+    color: white;
+    margin-bottom: 5px;
+}
+
+.draft-rankings-table {
+    overflow-x: auto;
+}
+
+.team-numbers {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 10px;
+}
+
+.team-number {
+    padding: 5px 10px;
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+
+.player-details {
+    display: flex;
+    padding: 0 10px;
+    margin-bottom: 5px;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    font-style: normal;
+    border: 1px solid #ddd;
+}
+
+.empty-slot {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 5px;
+    padding: 0 10px;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    font-style: normal;
+    font-size: 14px;
+    border: 1px solid #ddd;
+}
+
+.empty-slot.current-pick {
+    background-color: #deffe8;
+}
+
+.player-details:hover {
+    cursor: pointer;
+    background-color: #ffe1e1;
+}
+
+.draft-player-row:hover {
+    cursor: pointer;
+    background-color: #deffe8;
+}
+
+.pick-number {
+    font-size: 10px;
+    margin-left: -10px;
+    transform: rotate(270deg);
+    writing-mode: horizontal-tb;
+}
+
+.player-image {
+    width: auto;
+    height: auto;
+    margin-right: 20px;
+}
+
+.player-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.team-and-position {
+    display: flex;
+    gap: 10px;
+    font-size: 0.9rem;
+}
+
+.player-name {
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.player-desc {
+    font-size: 15px;
+}
+
+.draft-filter {
+    width: 100px;
+}
+
+.draft-filter-container {
+    display: flex;
+    align-items: center;
+}
+
+.spacing {
+    margin-top: 70px;
+}
+
+.reset-button {
+    margin-left: 10px;
+    padding: 5px 10px;
+    font-size: 14px;
+    cursor: pointer;
+    background-color: #d9534f;
+    color: white;
+    border: none;
+    border-radius: 4px;
+}
+
+.reset-button:hover {
+    background-color: #c9302c;
+}
+
+.toggle-roster-button {
+    margin-left: 10px;
+    padding: 5px 10px;
+    font-size: 14px;
+    cursor: pointer;
+    background-color: hsl(217, 71%, 56%);
+    color: white;
+    border: none;
+    border-radius: 4px;
+}
+
+.toggle-roster-button:hover {
+    background-color: hsl(217, 69%, 51%);
+}
+
+.header-dot-indicators {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.blue-dot, .red-dot, .orange-dot, .yellow-dot, .green-dot, .purple-dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    margin: 0px 2px;
+}
+
+.blue-dot {
+    background-color: rgb(44, 161, 207);
+}
+
+.red-dot {
+    background-color: rgb(207, 44, 44);
+}
+
+.orange-dot {
+    background-color: rgb(237, 137, 54);
+}
+
+.yellow-dot {
+    background-color: rgb(255, 204, 0);
+}
+
+.green-dot {
+    background-color: rgb(79, 207, 44);
+}
+
+.purple-dot {
+    background-color: rgb(131, 44, 207);
+}
+
+.dot-label {
+    font-size: 12px;
+    color: #333;
+    margin-right: 10px;
+    margin-left: 3px;
+}
+
+.draft-filter-container {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    background-color: white;
+}
+
+.filter-header {
+    font-size: 24px;
+    margin-right: 5px;
+    color: #333;
+    font-weight: bold;
+}
+
+.draft-filter-subcontainer {
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+    width: 100%;
+    background-color: transparent;
+    border: none;
+    background: white;
+}
+
+.checkbox-label {
+    display: flex;
+    align-items: center;
+    margin: 5px 5px;
+    font-size: 12px;
+}
+
+.checkbox-label input[type="radio"] {
+    margin: 0px 3px;
+    transform: scale(0.8);
+}
+
+.search-input {
+    border-radius: 4px 0px 0px 4px;
+    font-size: 14px;
+    padding: 5px 10px;
+    width: 160px;
+    margin-left: 20px;
+    border: 1px solid #ccc;
+    background-color: #f9f9f9;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    outline: none;
+}
+
+.search-button {
+    border-radius: 0px 4px 4px 0px;
+    font-size: 14px;
+    padding: 5px 10px;
+    width: auto;
+    height: auto;
+    border: 1px solid hsl(217, 71%, 56%);
+    background-color: hsl(217, 71%, 56%);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    outline: none;
+}
+
+.search-button:hover {
+    background-color: hsl(217, 69%, 51%);
+}
+
+.player-text-container {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+}
+
+.player-name-and-dots {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 5px;
+}
+
+.dot-container {
+    display: flex;
+    align-items: center; /* Align dots vertically in the center */
+    gap: 2px; /* Space between each dot */
+}
+
+
+.draft-player-header {
+    min-width:350px;
+    height: 38px;
+    display: flex;
+    align-items: center;
+    padding-left: 10px;
+    border-left: 1px solid #ffffff;
+}
+
+.draft-player-column {
+    min-width: 350px;
+    display: flex;
+    align-items: center;
+}
