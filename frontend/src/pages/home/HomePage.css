@@ -1,19 +1,15 @@
-.homepage-container {
-    display: flex;
-    flex-direction: row;
-    padding: 20px;
-    width: 100%;
-    margin-top: 100px;
-  }
-  
-  .main-content {
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background-color: #ffffff;
-    border-radius: 12px;
-    padding: 20px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  }
-  
+.rankings-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.vertical-scroll-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 1284px;
+  padding: 20px;
+  overflow-y: auto;
+}

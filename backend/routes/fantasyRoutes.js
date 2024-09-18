@@ -54,7 +54,8 @@ router.get("/draft-rankings/all", async (req, res) => {
                 projected_fpts,
                 fpts_2024,
                 fpts_2023,
-                elo
+                rec_2024,
+                rec_2023
             FROM
                 ultimate_draft_table
             ORDER BY
@@ -96,7 +97,8 @@ router.get("/draft-rankings/qb", async (req, res) => {
                 projected_fpts,
                 fpts_2024,
                 fpts_2023,
-                elo
+                rec_2024,
+                rec_2023
             FROM
                 ultimate_draft_table
             WHERE
@@ -140,7 +142,8 @@ router.get("/draft-rankings/rb", async (req, res) => {
                 projected_fpts,
                 fpts_2024,
                 fpts_2023,
-                elo
+                rec_2024,
+                rec_2023
             FROM
                 ultimate_draft_table
             WHERE
@@ -184,7 +187,8 @@ router.get("/draft-rankings/wr", async (req, res) => {
                 projected_fpts,
                 fpts_2024,
                 fpts_2023,
-                elo
+                rec_2024,
+                rec_2023
             FROM
                 ultimate_draft_table
             WHERE
@@ -228,7 +232,8 @@ router.get("/draft-rankings/te", async (req, res) => {
                 projected_fpts,
                 fpts_2024,
                 fpts_2023,
-                elo
+                rec_2024,
+                rec_2023
             FROM
                 ultimate_draft_table
             WHERE
@@ -286,7 +291,8 @@ router.get("/draft-rankings/flex", async (req, res) => {
                 projected_fpts,
                 fpts_2024,
                 fpts_2023,
-                elo
+                rec_2024,
+                rec_2023
             FROM
                 ultimate_draft_table
             WHERE
@@ -332,9 +338,12 @@ router.get("/draft-rankings/dst", async (req, res) => {
                 projected_fpts,
                 fpts_2024,
                 fpts_2023,
-                elo
+                rec_2024,
+                rec_2023
             FROM
                 ultimate_draft_table
+            WHERE
+                position = 'DST'
             ORDER BY
                 ecr
         `);
@@ -371,7 +380,8 @@ router.get("/draft-rankings/k", async (req, res) => {
                 projected_fpts,
                 fpts_2024,
                 fpts_2023,
-                elo
+                rec_2024,
+                rec_2023
             FROM
                 ultimate_draft_table
             WHERE

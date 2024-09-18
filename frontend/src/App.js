@@ -12,9 +12,10 @@ import HandleTokenRedirect from "./pages/authentication/HandleTokenRedirect.js";
 import ForgotPasswordPage from "./pages/authentication/ForgotPasswordPage";
 import ResetPasswordPage from "./pages/authentication/ResetPasswordPage";
 
+import DraftRankingsPage from "./pages/fantasy/DraftRankingsPage.js";
+import TradeAnalyzerPage from "./pages/trade_analyzer/TradeAnalyzerPage.js";
 import RankingsPage from "./pages/rankings/RankingsPage.js";
 import MatchupsPage from "./pages/matchups/MatchupsPage.js";
-import DraftRankingsPage from "./pages/fantasy/DraftRankingsPage.js";
 
 
 function App() {
@@ -33,6 +34,7 @@ function App() {
           <Route path="/reset-password" element={<ResetPasswordPage />} />
 
           <Route path="/fantasy" element={<DraftRankingsPage/>} />
+          <Route path="/trade-analyzer" element={<TradeAnalyzerPage/>} />
           <Route path="/rankings" element={<RankingsPage/>} />
           <Route path="/matchups" element={<MatchupsPage/>} />
 

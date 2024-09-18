@@ -1,11 +1,11 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import { FaSearch } from 'react-icons/fa';
 import '../rankings/RankingsPage.css';
 import './DraftRankingsPage.css';
 import defaultHeadshot from '../../assets/default-headshot.png';
 
-function DraftRankingsTable({ onSelectPlayer, selectedPlayerIds, currentDraftingTeamId, teamByeWeeks, setTeamByeWeeks }) {
+function DraftRankingsTable({ onSelectPlayer, selectedPlayerIds, currentDraftingTeamId, teamByeWeeks, setTeamByeWeeks, scoringFormat }) {
     const [rankings, setRankings] = useState([]);
     const [allRankings, setAllRankings] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
@@ -13,47 +13,7 @@ function DraftRankingsTable({ onSelectPlayer, selectedPlayerIds, currentDrafting
     const [selectedPosition, setSelectedPosition] = useState('ALL');
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-
-    const columnGroups = {
-        'Draft': [
-            'BYE', 
-            'ECR', 
-            'SD', 
-            'BEST', 
-            'WORST'
-        ],
-        'Projections': [
-            'projected_completion_percentage',
-            'projected_passing_yds',
-            'projected_passing_tds',
-            'projected_rushing_attempts',
-            'projected_rushing_yds',
-            'projected_rushing_tds',
-            'projected_receiving_rec',
-            'projected_receiving_yds',
-            'projected_receiving_tds',
-            'projected_sack',
-            'projected_int',
-            'projected_fr',
-            'projected_ff',
-            'projected_td',
-            'projected_safety',
-            'projected_pa',
-            'projected_yds_agn',
-            'projected_fg',
-            'projected_fga',
-            'projected_xpt',
-            'projected_fpts'
-        ],
-        'Fantasy': [
-            '2024', 
-            '2023'
-        ]
-    };
-
-    const simplifyColumnName = (name) => {
-        return name.replace('PASS_', '').replace('RUSH_', '').replace('REC_', '').replace('FNTSY_', '');
-    };
+    
 
     const handleSearchInputChange = (event) => {
         setSearchInput(event.target.value);
@@ -86,29 +46,83 @@ function DraftRankingsTable({ onSelectPlayer, selectedPlayerIds, currentDrafting
     const handlePositionChange = (event) => {
         setSelectedPosition(event.target.value);
     };
-
+    
     const handleSelectPlayer = (player) => {
         onSelectPlayer(player);
         if (!selectedPlayerIds.includes(player.id)) {
-            // Update the bye week record for the current drafting team
             const updatedByeWeeks = { ...teamByeWeeks };
-            console.log('Before updating bye weeks:', updatedByeWeeks);
+            
             if (!updatedByeWeeks[currentDraftingTeamId]) {
                 updatedByeWeeks[currentDraftingTeamId] = {};
             }
             if (!updatedByeWeeks[currentDraftingTeamId][player.position]) {
                 updatedByeWeeks[currentDraftingTeamId][player.position] = [];
             }
-            updatedByeWeeks[currentDraftingTeamId][player.position].push(player.bye);
-            console.log(`After adding bye week for ${player.position} of team ${currentDraftingTeamId}:`, updatedByeWeeks);
+            
+            updatedByeWeeks[currentDraftingTeamId][player.position].push(player.draft_bye);
+            
             setTeamByeWeeks(updatedByeWeeks);
         }
     };
 
     const isRedDotNeeded = (player) => {
-        const currentTeamByeWeeks = teamByeWeeks[currentDraftingTeamId] && teamByeWeeks[currentDraftingTeamId][player.position];
-        return currentTeamByeWeeks && currentTeamByeWeeks.includes(player.bye);
+        const currentTeamByeWeeks = teamByeWeeks[currentDraftingTeamId];
+
+        if (currentTeamByeWeeks && currentTeamByeWeeks[player.position]) {
+            const isOverlap = currentTeamByeWeeks[player.position].includes(player.draft_bye);
+            return isOverlap;
+        }
+
+        return false;
     };
+
+    const positionWeights = {
+        QB: 0.95,
+        RB: 1.22,
+        WR: 1.2,
+        TE: 1.2,
+        DST: 0.9,
+        K: 0.8
+    };
+
+    function calculateElo(player, positionWeight) {
+        const baseElo = 1000;
+        const rankFactor = (400 - player.draft_ecr) * 3;
+    
+        const performanceFactor = player.adjusted_projected_fpts * 3 + player.adjusted_fpts_2024 * 3;
+    
+        const elo = (baseElo + rankFactor + performanceFactor) * positionWeight;
+        return Math.round(elo);
+    }
+    
+    const adjustPointsByFormat = useCallback((player) => {
+        let adjustmentFactor = 0;
+        if (scoringFormat === 'Standard') {
+            adjustmentFactor = 1;
+        } else if (scoringFormat === 'Half PPR') {
+            adjustmentFactor = 0.5;
+        }
+    
+        player.adjusted_projected_fpts = player.projected_fpts - (adjustmentFactor * player.projected_receiving_rec);
+        player.adjusted_fpts_2024 = player.fpts_2024 - (adjustmentFactor * player.rec_2024);
+        player.adjusted_fpts_2023 = player.fpts_2023 - (adjustmentFactor * player.rec_2023);
+
+        const positionWeight = positionWeights[player.position] || 1.0;
+    
+        player.elo = calculateElo({
+            ...player,
+            draft_ecr: player.draft_ecr,
+            adjusted_projected_fpts: player.adjusted_projected_fpts,
+            adjusted_fpts_2024: player.adjusted_fpts_2024
+        }, positionWeight);
+    
+        return player;
+    }, [scoringFormat]);
+      
+    useEffect(() => {
+        const adjustedRankings = allRankings.map(player => adjustPointsByFormat(player));
+        setRankings(adjustedRankings);
+    }, [allRankings, adjustPointsByFormat]);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -136,6 +150,10 @@ function DraftRankingsTable({ onSelectPlayer, selectedPlayerIds, currentDrafting
         );
         setRankings(filteredRankings);
     }, [searchTerm, allRankings]);
+
+    const getOriginalRank = (playerId) => {
+        return allRankings.findIndex(p => p.id === playerId) + 1;
+    };
 
     const filteredRankings = rankings.filter(item => !selectedPlayerIds.includes(item.id));
 
@@ -216,10 +234,8 @@ function DraftRankingsTable({ onSelectPlayer, selectedPlayerIds, currentDrafting
     );
 
     const renderStatColumn = (value, label) => {
-        // Always render these specific fields even if their values are zero or null
-        const alwaysRender = ['Proj FPTS', '2023 Fpts', '2024 Fpts'];
+        const alwaysRender = ['Proj FPTS', '2023 FPTS', '2024 FPTS'];
     
-        // Check if the current label is one of the special cases that should always be rendered
         if (alwaysRender.includes(label)) {
             return (
                 <div className="draft-stat-column">
@@ -228,7 +244,6 @@ function DraftRankingsTable({ onSelectPlayer, selectedPlayerIds, currentDrafting
             );
         }
     
-        // For all other labels, continue checking for various forms of "zero" values
         if (value !== 0 && value !== null && value !== '' && value !== undefined && value !== '0' && value !== 0.0) {
             return (
                 <div className="draft-stat-column">
@@ -237,7 +252,7 @@ function DraftRankingsTable({ onSelectPlayer, selectedPlayerIds, currentDrafting
             );
         }
     
-        return null; // Do not render the column if the value is effectively "zero"
+        return null;
     };
 
     if (loading) {
@@ -279,7 +294,7 @@ function DraftRankingsTable({ onSelectPlayer, selectedPlayerIds, currentDrafting
                 <div className="rankings-table">
                     {filteredRankings.map((item, index) => (
                         <div key={item.id} className="draft-player-row player-row" onClick={() => handleSelectPlayer(item)}>
-                            <div className="rank-column">{index + 1}</div>
+                            <div className="rank-column">{getOriginalRank(item.id)}</div>
                             <div className="draft-player-column">
                                 <img
                                     src={item.image_url || defaultHeadshot}
@@ -304,7 +319,9 @@ function DraftRankingsTable({ onSelectPlayer, selectedPlayerIds, currentDrafting
                             </div>
                             <div className="draft-stat-column">{item.draft_bye}<span className="draft-stat-column-label">BYE</span></div>
                             <div className="draft-stat-column">{item.draft_ecr}<span className="draft-stat-column-label">ECR</span></div>
-                            <div className="draft-stat-column">{item.elo}<span className="draft-stat-column-label">ELO</span></div>
+                            {renderStatColumn(item.projected_fpts, "Proj FPTS")}
+                            {renderStatColumn(item.fpts_2024, "2024 FPTS")}
+                            {renderStatColumn(item.fpts_2023, "2023 FPTS")}
                             {renderStatColumn(item.projected_completion_percentage, "Proj Cmp %")}
                             {renderStatColumn(item.projected_passing_yds, "Proj Pass Yds")}
                             {renderStatColumn(item.projected_passing_tds, "Proj Pass TDs")}
@@ -325,9 +342,6 @@ function DraftRankingsTable({ onSelectPlayer, selectedPlayerIds, currentDrafting
                             {renderStatColumn(item.projected_fg, "Proj FG")}
                             {renderStatColumn(item.projected_fga, "Proj FGA")}
                             {renderStatColumn(item.projected_xpt, "Proj XPT")}
-                            {renderStatColumn(item.projected_fpts, "Proj FPTS")}
-                            {renderStatColumn(item.fpts_2024, "2024 Fpts")}
-                            {renderStatColumn(item.fpts_2023, "2023 Fpts")}
                         </div>
                     ))}
                 </div>

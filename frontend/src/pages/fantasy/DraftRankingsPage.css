@@ -19,7 +19,7 @@
     overflow-y: auto;
     width: 100%;
     padding-bottom: 10px;
-    min-height: 480px;
+    min-height: 200px;
 }
 
 .vertical-scroll-container {
@@ -37,8 +37,8 @@
 }
 
 .draft-column, .player-details, .empty-slot{
-    min-width: 300px;
-    width: 300px;
+    min-width: 270px;
+    width: 270px;
     min-height: 45px;
     height: 45px;
     margin-right: 5px;
@@ -53,8 +53,8 @@
 .draft-column-header {
     padding: 1px 0;
     text-align: center;
-    font-weight: bold;
     font-size: 12px;
+    font-weight: bold;
     color: white;
     margin-bottom: 5px;
 }
@@ -149,11 +149,13 @@
 
 .draft-filter {
     width: 100px;
+    margin-right: 10px;
 }
 
 .draft-filter-container {
     display: flex;
     align-items: center;
+    margin-top: -20px;
 }
 
 .spacing {
@@ -188,6 +190,21 @@
 
 .toggle-roster-button:hover {
     background-color: hsl(217, 69%, 51%);
+}
+
+.settings-button {
+    margin-left: 10px;
+    padding: 5px 10px;
+    font-size: 14px;
+    cursor: pointer;
+    background-color: #818080;
+    color: white;
+    border: none;
+    border-radius: 4px;
+}
+
+.settings-button:hover {
+    background-color: #6c6c6c;
 }
 
 .header-dot-indicators {
@@ -238,15 +255,35 @@
 .draft-filter-container {
     display: flex;
     align-items: center;
-    padding: 10px;
+    padding-bottom: 10px;
     background-color: white;
+}
+
+.round-pick-header {
+    display: flex;
+    align-items: center; /* Aligns items vertically in the center */
+    justify-content: flex-start;
+    gap: 0px;
+    width: 100%;
+}
+
+.filter-header, .filter-subheader {
+    margin: 0;
+    padding: 0;
 }
 
 .filter-header {
     font-size: 24px;
-    margin-right: 5px;
     color: #333;
     font-weight: bold;
+}
+
+.filter-subheader {
+    font-size: 16px;
+    color: #333;
+    font-weight: normal;
+    padding-bottom: 13px;
+    padding-left: 40px;
 }
 
 .draft-filter-subcontainer {
@@ -314,13 +351,10 @@
 
 .dot-container {
     display: flex;
-    align-items: center; /* Align dots vertically in the center */
-    gap: 2px; /* Space between each dot */
+    align-items: center;
+    gap: 2px;
 }
 
-
-
-/* Container for the entire table */
 .rankings-container {
     display: flex;
     flex-direction: column;
@@ -328,27 +362,43 @@
     width: 100%;
 }
 
-/* Header and rows container */
 .header-and-rows {
     display: flex;
 }
 
-/* Fixed columns for Rank and Player */
 .fixed-columns {
     flex-shrink: 0;
     background-color: white;
 }
 
 .fixed-column-container {
-    min-width: 400px; /* Adjust based on content size */
-    overflow-y: auto; /* Allow vertical scrolling */
-    float: left; /* Optional: depending on layout requirements */
-    height: 500px; /* Adjust based on viewport or container size */
+    min-width: 400px;
+    overflow-y: auto;
+    float: left;
+    height: 500px;
 }
 
 .draft-player-header {
-    min-width:350px;
+    min-width:360px;
     height: 38px;
+    display: flex;
+    align-items: center;
+    padding-left: 10px;
+    border-left: 1px solid #ffffff;
+}
+
+.draft-draft-header {
+    height: 38px;
+    width: 145px;
+    display: flex;
+    align-items: center;
+    padding-left: 10px;
+    border-left: 1px solid #ffffff;
+}
+
+.draft-fantasy-header {
+    height: 38px;
+    min-width: 245px;
     display: flex;
     align-items: center;
     padding-left: 10px;
@@ -378,7 +428,7 @@
 
 .draft-stat-column {
     font-size: 14px;
-    font-weight: bold;
+    font-weight: normal;
     color: #5d5c5c;
 }
 
