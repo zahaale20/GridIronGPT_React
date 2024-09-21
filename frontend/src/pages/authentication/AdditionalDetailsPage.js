@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from "react";
 import axios from "axios";
 import {useNavigate, Link} from "react-router-dom";
-import logoImage from "../../assets/gridirongpt.png";
+import logoImage from "../../assets/gridiron_gpt_secondary_dark.png";
 import "./AuthenticationStyling.css"; // Ensure the same CSS file is used
 
 function AdditionalDetailsPage() {
@@ -33,32 +33,33 @@ function AdditionalDetailsPage() {
 		setIsFormValid(isValid);
 	}, [userData]);
 
-	// Submit handler
 	const handleSubmit = async event => {
 		event.preventDefault();
 		if (!isFormValid) {
-			setErrorMessage("Please fill all fields correctly.");
-			return;
+		  setErrorMessage("Please fill all fields correctly.");
+		  return;
 		}
+		
 		try {
 			const response = await axios.post(
-				process.env.REACT_APP_BACKEND_LINK +
-					"/users/register-google-user",
+				process.env.REACT_APP_BACKEND_LINK + "/users/register-google-user",
 				userData
 			);
 			localStorage.setItem(
 				process.env.REACT_APP_JWT_TOKEN_NAME,
 				response.data.token
 			);
-			navigate("/profile"); // Redirect to profile page after registration
+			navigate("/profile");
 		} catch (error) {
-			const errorText = error.response
-				? error.response.data.error
-				: error.message;
-			setErrorMessage(`Registration failed: ${errorText}`);
-			console.error("Registration failed:", error);
-		}
-	};
+			if (error.response && error.response.data && error.response.data.error) {
+				setErrorMessage(`Registration failed: ${error.response.data.error}`);
+			  } else if (error.message) {
+				setErrorMessage(`Registration failed: ${error.message}`);
+			  } else {
+				setErrorMessage("Registration failed. Please try again.");
+			}
+	  	};
+	}
 
     return (
         <div className="vertical-center margin-top">
@@ -71,8 +72,8 @@ function AdditionalDetailsPage() {
                         Complete Your Registration
                     </h5>
 					<p className="text-center" style={{ fontSize: "14px", marginTop:"20px" }}>Add your username and phone number to finish registering.</p>
-                    {errorMessage && <div>{errorMessage}</div>}
-                    <div className="margin input" style ={{marginTop:"20px"}}>
+                    {errorMessage && <div style={{marginLeft:"10px", marginTop:"0px", color:"#C4302B", fontSize:"12px"}}>{errorMessage}</div>}
+                    <div className="margin input">
                         <p className={userData.username ? "input-label-full" : "input-label-empty unselectable"}>
                             Username
                         </p>
@@ -84,10 +85,10 @@ function AdditionalDetailsPage() {
                             onChange={handleChange}
                             required
                             autoComplete="off"
-							style={{fontSize: "13px", 								
-							paddingTop: userData.username ? "16px" : "12px",
-							paddingBottom: userData.username ? "8px" : "12px"}}
-                        />
+							style={{ paddingRight: "2.5rem", fontSize: "13px", 								
+							paddingTop: userData.username ? "14px" : "10px",
+							paddingBottom: userData.username ? "6px" : "10px"}}
+						/>
                     </div>
 
                     <div className="margin input">
@@ -102,10 +103,10 @@ function AdditionalDetailsPage() {
                             onChange={handleChange}
                             required
                             autoComplete="off"
-							style={{fontSize: "13px", 								
-							paddingTop: userData.phoneNumber ? "16px" : "12px",
-							paddingBottom: userData.phoneNumber ? "8px" : "12px"}}
-                        />
+							style={{ paddingRight: "2.5rem", fontSize: "13px", 								
+							paddingTop: userData.phoneNumber ? "14px" : "10px",
+							paddingBottom: userData.username ? "6px" : "10px"}}
+						/>
                     </div>
 
 					<button

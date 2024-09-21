@@ -72,3 +72,25 @@
 .logo-image:hover {
     transform: scale(1.075);
 }
+
+.profile-icon-container {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    width: 30px; /* Size of the icon */
+    height: 30px;
+    transition: transform 0.3s ease; /* Smooth hover effect */
+  }
+  
+  .profile-icon {
+    color: white; /* Default icon color */
+    font-size: 48px; /* Icon size */
+    transition: color 0.3s ease, transform 0.3s ease; /* Transition for color and scaling */
+  }
+  
+  .profile-icon-container:hover .profile-icon {
+    color: #2d99fe; /* Blue color when hovered */
+    transform: scale(1.1); /* Slightly enlarge on hover */
+  }
+  

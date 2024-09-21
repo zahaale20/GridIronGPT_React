@@ -1,9 +1,9 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
-import logoImage from '../assets/gridirongpt_logo.png';
+import logoImage from '../assets/gridiron_gpt_secondary_light.png';
 import questionMarkIcon from '../assets/question_mark_icon.png';
-import profileIcon from '../assets/profile_icon_normal.png';
+import { FaUserCircle } from 'react-icons/fa';
 
 import './NavBar.css';
 import '../style/Theme.css'; 
@@ -36,6 +36,15 @@ function NavBar() {
         });
     };
 
+    const handleProfileNavigation = () => {
+        const token = localStorage.getItem(process.env.REACT_APP_JWT_TOKEN_NAME);
+        if (token) {
+            navigate('/profile');
+        } else {
+            navigate('/login');
+        }
+    };
+
     return (
         <nav className="nav">
             <div className="top-row">
@@ -45,7 +54,9 @@ function NavBar() {
 
                 <div className="top-row-icons">
                     <img className="icon-image" src={questionMarkIcon} alt="Help" />
-                    <img className="icon-image" src={profileIcon} alt="Profile" />
+                    <div className="profile-icon-container" onClick={handleProfileNavigation}>
+                        <FaUserCircle className="profile-icon" />
+                    </div>
                 </div>
             </div>
             <div className="bottom-row">

@@ -3,11 +3,12 @@ import axios from "axios";
 import {useNavigate, useSearchParams} from "react-router-dom";
 import PropTypes from "prop-types"; // Import PropTypes for prop validation
 import {FaEye, FaEyeSlash, FaCheckCircle, FaTimesCircle} from "react-icons/fa";
-import logoImage from "../assets/haggle-horizontal.png";
-import "./LoginPage.css";
+import logoImage from "../../assets/gridiron_gpt_secondary_dark.png";
+import "./AuthenticationStyling.css";
 
 // ChangePasswordPage component for handling password reset functionality
 const ChangePasswordPage = () => {
+	const [errorMessage, setErrorMessage] = useState("");
 	const [password, setPassword] = useState("");
 	const [passwordVisible, setPasswordVisible] = useState(false);
 	const [passwordFocused, setPasswordFocused] = useState(false);
@@ -42,12 +43,12 @@ const ChangePasswordPage = () => {
 					password
 				}
 			);
-			alert(
+			setErrorMessage(
 				"Password has been successfully reset. You can now login with your new password."
 			);
 			navigate("/login");
 		} catch (error) {
-			alert(
+			setErrorMessage(
 				"Failed to reset password. Please try again or request a new password reset link."
 			);
 		}
@@ -62,22 +63,22 @@ const ChangePasswordPage = () => {
                     </div>
                     <h5 className="text-center" style={{ fontSize: "18px" }}>Change Password</h5>
                     <p className="text-center" style={{ fontSize: "14px" }}>Enter your new password and check it to confirm it&apos;s correct.</p>
-                    <div className="margin input" style = {{marginTop:"20px"}}>
+                    {errorMessage && <div style={{marginLeft:"10px", marginTop:"10px", color:"red", fontSize:"12px"}}>{errorMessage}</div>}
+					<div className="margin input" style = {{marginTop:"10px"}}>
                         <p className={password.length > 0 ? "input-label-full" : "input-label-empty unselectable"}>
                             New Password
                         </p>
-                        <input
+						<input
                             type={passwordVisible ? "text" : "password"}
                             value={password}
                             onChange={e => setPassword(e.target.value)}
                             required
                             onFocus={handlePasswordFocus}
                             onBlur={handlePasswordBlur}
-                            style={{ paddingRight: "2.5rem",fontSize: "13px", 								
-							paddingTop: password ? "16px" : "12px",
-							paddingBottom: password ? "8px" : "12px"}}
-                            className="password-input"
-                        />
+                            style={{ paddingRight: "2.5rem", fontSize: "13px", 								
+							paddingTop: password ? "14px" : "10px",
+							paddingBottom: password ? "6px" : "10px"}}
+						/>
                         <div className="input-icon" style={{marginTop:"-3px"}} onClick={togglePasswordVisibility}>
                             {passwordVisible ? <FaEye /> : <FaEyeSlash />}
                         </div>

@@ -11,6 +11,8 @@ import AdditionalDetailsPage from "./pages/authentication/AdditionalDetailsPage"
 import HandleTokenRedirect from "./pages/authentication/HandleTokenRedirect.js";
 import ForgotPasswordPage from "./pages/authentication/ForgotPasswordPage";
 import ResetPasswordPage from "./pages/authentication/ResetPasswordPage";
+import ChangePasswordPage from "./pages/authentication/ChangePasswordPage";
+import ProfilePage from "./pages/user/ProfilePage.js";
 
 import DraftRankingsPage from "./pages/fantasy/DraftRankingsPage.js";
 import TradeAnalyzerPage from "./pages/trade_analyzer/TradeAnalyzerPage.js";
@@ -32,6 +34,9 @@ function App() {
           <Route path="/login/google" element={<HandleTokenRedirect />} />
           <Route path="/forgot-password" element={<ForgotPasswordPage/>} />
           <Route path="/reset-password" element={<ResetPasswordPage />} />
+          <Route path="/change-password" element={<ChangePasswordPage />} />
+
+          <Route path="/profile" element={<ProfilePage/>} />
 
           <Route path="/fantasy" element={<DraftRankingsPage/>} />
           <Route path="/trade-analyzer" element={<TradeAnalyzerPage/>} />

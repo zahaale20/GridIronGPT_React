@@ -1,50 +1,49 @@
 .search-bar-container {
   width: 100%;
-  max-width: 700px;
-  margin: 0 auto; /* Center the search bar horizontally */
+  max-width: 600px;
+  margin: 20px auto; /* Center with vertical spacing */
 }
 
 .search-form {
   display: flex;
   align-items: center;
   width: 100%;
-  background-color: #ffffff;
-  border-radius: 12px; /* Use pixels instead of percentage for consistent shape */
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-  transition: box-shadow 0.3s ease, background-color 0.3s ease;
 }
 
 .search-input {
   flex-grow: 1;
-  font-size: 18px;
-  padding: 12px 20px;
+  font-size: 20px; /* Consistent font size */
+  padding: 14px 20px;
   border: none;
-  border-radius: 12px 0 0 12px; /* Round only the left side */
+  border-radius: 12px 0 0 12px;
   outline: none;
   background-color: transparent;
   color: #333;
-  transition: all 0.3s ease;
+  transition: background-color 0.3s ease, color 0.3s ease; /* Only animate background and color */
 }
 
 .search-input::placeholder {
   color: #aaa;
   font-style: italic;
+  font-size: 20px;
 }
 
 .search-input:focus {
   outline: none;
+  background-color: #fff; /* Slight highlight on focus */
 }
 
 .search-input:focus::placeholder {
-  outline: none;
+  color: #bbb; /* Fade placeholder on focus */
 }
 
 .search-icon-button {
   background: #2d99fe;
   border: none;
-  padding: 12px;
+  padding: 14px;
   width: 60px;
-  border-radius: 0 12px 12px 0; /* Round only the right side */
+  height: 28px;
+  border-radius: 0 4px 4px 0; /* Round only the right side */
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -54,11 +53,10 @@
 
 .search-icon-button:hover {
   background: #1c7cd6;
-  width: 60px;
 }
 
 .search-icon {
-  width: 24px;
-  height: 24px;
+  width: 12px;
+  height: 12px;
   color: #fff;
 }

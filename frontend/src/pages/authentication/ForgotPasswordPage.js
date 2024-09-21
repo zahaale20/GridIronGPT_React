@@ -2,7 +2,7 @@
 import React, {useState} from "react";
 import axios from "axios";
 // Importing logo and styling components
-import logoImage from "../../assets/gridirongpt.png";
+import logoImage from "../../assets/gridiron_gpt_secondary_dark.png";
 import {Link} from "react-router-dom";
 import {FaCheckCircle, FaTimesCircle} from "react-icons/fa";
 
@@ -10,7 +10,7 @@ import {FaCheckCircle, FaTimesCircle} from "react-icons/fa";
 const ForgotPasswordPage = () => {
 	// State hooks for managing email input and message display
 	const [email, setEmail] = useState("");
-	const [message, setMessage] = useState("");
+	const [errorMessage, setErrorMessage] = useState("");
 	//const navigate = useNavigate();
 
 	// check if valid email
@@ -33,12 +33,12 @@ const ForgotPasswordPage = () => {
 				{email}
 			);
 			// Assuming the API responds with a success message
-			setMessage(
+			setErrorMessage(
 				response.data.message ||
 					"If an account with that email exists, we have sent a reset password link."
 			);
 		} catch (error) {
-			setMessage("Error: Failed to reset password. Please try again.");
+			setErrorMessage("Error: Failed to reset password. Please try again.");
 		}
 	};
 
@@ -56,7 +56,7 @@ const ForgotPasswordPage = () => {
 					
 
 					<form onSubmit={handleSubmit}>
-                    {message && <div style={{marginLeft:"10px", marginTop:"10px", color:"#20609C", fontSize:"12px"}}>{message}</div>}
+                    {errorMessage && <div style={{marginLeft:"10px", marginTop:"10px", color:"#20609C", fontSize:"12px"}}>{errorMessage}</div>}
 
 						<div className="input margin" style={{marginTop: "10px"}}>
 							<p

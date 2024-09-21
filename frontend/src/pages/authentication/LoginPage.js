@@ -4,7 +4,7 @@ import axios from "axios";
 // Importing navigation hooks and components for routing and navigation
 import {Link} from "react-router-dom";
 // Importing logo, icons, and styled components for UI
-import logoImage from "../../assets/gridirongpt.png";
+import logoImage from "../../assets/gridiron_gpt_secondary_dark.png";
 import {FaEye, FaEyeSlash} from "react-icons/fa";
 import googlepng from "../../assets/google.png";
 import "./AuthenticationStyling.css";
@@ -67,7 +67,7 @@ function LoginPage() {
 
 	const handleGoogleLogin = () => {
 		const clientId =
-			"71122616560-tv80mel7fi0s2etitj1enhk192v06h0e.apps.googleusercontent.com";
+			"793863058012-8cndh99u4rn15ar9m06uklo7hlovp83r.apps.googleusercontent.com";
 
 		const redirectUrl =
 			process.env.REACT_APP_BACKEND_LINK + "/users/auth/google/callback";

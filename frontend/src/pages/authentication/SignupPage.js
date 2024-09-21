@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from "react";
 import axios from "axios";
-import logoImage from "../../assets/gridirongpt.png";
+import logoImage from "../../assets/gridiron_gpt_secondary_dark.png";
 import googlepng from "../../assets/google.png";
 import {FaCheckCircle, FaTimesCircle, FaEye, FaEyeSlash} from "react-icons/fa";
 import {Link, useNavigate} from "react-router-dom";

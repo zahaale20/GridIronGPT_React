@@ -2,8 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { FaEye, FaEyeSlash, FaCheckCircle, FaTimesCircle } from "react-icons/fa";
-import PropTypes from "prop-types";
-import logoImage from "../../assets/gridirongpt.png";
+import logoImage from "../../assets/gridiron_gpt_secondary_dark.png";
 import "./AuthenticationStyling.css";
 
 const ResetPasswordPage = () => {

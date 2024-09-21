@@ -9,6 +9,18 @@ const crypto = require("crypto");
 const {verifyToken} = require("../util/middleware");
 const {Pool} = require("pg");
 require("dotenv").config();
+const fs = require('fs');
+// Use fs.readFileSync to load the image as base64
+const path = require('path');
+
+// Convert image to base64
+let base64Image = '';
+try {
+  const bannerImage = fs.readFileSync(path.join(__dirname, '../assets/gridiron_gpt_primary_dark.png'), { encoding: 'base64' });
+  base64Image = `data:image/png;base64,${bannerImage}`;
+} catch (error) {
+  console.error("Error reading image file:", error);
+}
 
 const connectionString = process.env.DB_CONNECTION_STRING; // stores supabase db connection string, allowing us to connect to supabase db
 // console.log("\nconnectionString: ", connectionString);
@@ -262,7 +274,7 @@ router.post("/register-google-user", async (req, res) => {
 			// if the user exists and has a password, they should use their Haggle credentials to log in
 			if (user.password) {
 				return res.status(409).json({
-					error: "User exists with a password. Please use Haggle credentials to log in."
+					error: "User exists with a password. Please use login credentials to log in."
 				});
 			}
 
@@ -270,6 +282,7 @@ router.post("/register-google-user", async (req, res) => {
 			const token = jwt.sign({username: user.username}, secretKey, {
 				expiresIn: "24h"
 			});
+
 			res.redirect(
 				process.env.REACT_APP_FRONTEND_LINK +
 					`/profile?token=${encodeURIComponent(token)}`
@@ -391,11 +404,12 @@ router.post("/forgot-password", async (req, res) => {
 	try {
 		const connection = createConnection();
 		// Verify if email exists
-		const {rows: users} = await connection.query(
+		const {rows: user} = await connection.query(
 			"SELECT * FROM users WHERE email = $1",
 			[email]
 		);
-		if (users.length === 0) {
+
+		if (user.length === 0) {
 			return res.status(404).json({error: "User not found"});
 		}
 
@@ -410,9 +424,7 @@ router.post("/forgot-password", async (req, res) => {
 		);
 
 		// create the reset password url using the token
-		const resetUrl =
-			process.env.REACT_APP_FRONTEND_LINK +
-			`/reset-password?token=${resetToken}`;
+		const resetUrl = process.env.REACT_APP_FRONTEND_LINK + `/reset-password?token=${resetToken}`;
 
 		// use nodemailer
 		const nodemailer = require("nodemailer");
@@ -425,15 +437,43 @@ router.post("/forgot-password", async (req, res) => {
 		});
 
         // console.log("\ntransporter: ", transporter);
-
 		const mailOptions = {
 			from: process.env.OUTLOOK_EMAIL, // Replace with your email
 			to: email, // The user's email address
 			subject: "Password Reset Request",
-			html: `<p>You requested a password reset. Click the link below to set a new password:</p>
-             <p>
-                <a href="${resetUrl}">Reset Password</a>
-             </p>`
+			html: `
+			<div style="font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 16px; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e0e0e0; border-radius: 8px; background-color: #f9f9f9;">
+			
+			<div style="text-align: center; padding-bottom: 20px;">
+				<img src="${base64Image}" alt="Gridiron GPT Banner" style="width: 100%; height: auto; border-bottom: 1px solid #e0e0e0;" />
+			</div>
+		
+			
+			<div style="background-color: #ffffff; padding: 20px; border-radius: 8px;">
+			  <p style="font-size: 18px; color: #555;">Greetings, <strong>${user[0].fullName}</strong>,</p>
+			  <p style="color: #666;">We received a request to reset the password associated with your account. If you made this request, please click the button below to reset your password:</p>
+			  <div style="text-align: center; margin: 30px 0;">
+				<a href="${resetUrl}" style="display: inline-block; padding: 12px 25px; background-color: #2F3D77; color: #fff; font-size: 16px; text-decoration: none; border-radius: 5px; box-shadow: 0px 4px 6px rgba(0,0,0,0.1);">
+				  Reset Password
+				</a>
+			  </div>
+			  <p style="color: #666;">If you did not request a password reset, you can safely ignore this email. Your password will not change unless you click the button above and create a new one.</p>
+			  <p style="color: #666;">If you have any questions or need assistance, feel free to <a href="mailto:gridiron_gpt@outlook.com" style="color: #2F3D77; text-decoration: none;">contact our support team</a>.</p>
+			  <p style="color: #666;">Thank you,<br><strong>Gridiron Team</strong></p>
+			</div>
+			
+			<hr style="border: none; border-top: 1px solid #e0e0e0; margin: 30px 0;" />
+			
+			<p style="font-size: 12px; color: #999; text-align: center;">
+			  This email was sent to <strong>${email}</strong> in response to your password reset request. If you did not make this request, please <a href="mailto:gridiron_gpt@outlook.com" style="color: #999; text-decoration: none;">contact us immediately</a>.
+			</p>
+			
+			<p style="font-size: 12px; color: #999; text-align: center;">
+			  © ${new Date().getFullYear()} Gridiron GPT. All rights reserved.
+			</p>
+		  </div>
+		  
+			`
 		};
 
 		transporter.sendMail(mailOptions, function (error, info) {
