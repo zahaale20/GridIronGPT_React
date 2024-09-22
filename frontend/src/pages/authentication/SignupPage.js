@@ -154,8 +154,7 @@ function SignUpPage() {
 	};
 
 	const handleGoogleLogin = () => {
-		const clientId =
-			"71122616560-tv80mel7fi0s2etitj1enhk192v06h0e.apps.googleusercontent.com";
+		const clientId = process.env.REACT_APP_GOOGLE_CLIENT_ID;
 
 		const redirectUrl =
 			process.env.REACT_APP_BACKEND_LINK + "/users/auth/google/callback";
