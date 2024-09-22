@@ -128,7 +128,7 @@ function SignUpPage() {
 					);
 					if (registerResponse.status === 201) {
 						// success
-						navigate("/login");
+						navigate("/profile");
 					}
 				}
 			} catch (error) {

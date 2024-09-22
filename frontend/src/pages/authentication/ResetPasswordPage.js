@@ -10,6 +10,7 @@ const ResetPasswordPage = () => {
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [passwordFocused, setPasswordFocused] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const [isSuccess, setIsSuccess] = useState(false);
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const token = searchParams.get(process.env.REACT_APP_JWT_TOKEN_NAME);
@@ -27,23 +28,23 @@ const ResetPasswordPage = () => {
     e.preventDefault();
     if (!isPasswordValid) {
       setErrorMessage("Password does not meet the required criteria.");
+      setIsSuccess(false);
       return;
     }
 
     try {
       await axios.post(
         `${process.env.REACT_APP_BACKEND_LINK}/users/reset-password`,
-        {
-          token,
-          password
-        }
+        {token, password}
       );
-
+      setErrorMessage("Password has been successfully reset!");
+      setIsSuccess(true);
       navigate("/login");
     } catch (error) {
       setErrorMessage(
         "Failed to reset password."
       );
+      setIsSuccess(false);
     }
   };
 
@@ -58,7 +59,7 @@ const ResetPasswordPage = () => {
           <p className="text-center" style={{ fontSize: "14px" }}>Enter your new password.</p>
 
           {errorMessage && (
-            <div style={{ marginLeft: "10px", marginTop: "20px", color: "#C4302B", fontSize: "12px" }}>
+            <div style={{ marginLeft: "10px", marginTop: "20px", color: isSuccess ? "green" : "red", fontSize: "12px" }}>
               {errorMessage}
             </div>
           )}

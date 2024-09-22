@@ -11,6 +11,7 @@ const ForgotPasswordPage = () => {
 	// State hooks for managing email input and message display
 	const [email, setEmail] = useState("");
 	const [errorMessage, setErrorMessage] = useState("");
+	const [isSuccess, setIsSuccess] = useState(false);
 	//const navigate = useNavigate();
 
 	// check if valid email
@@ -37,8 +38,10 @@ const ForgotPasswordPage = () => {
 				response.data.message ||
 					"If an account with that email exists, we have sent a reset password link."
 			);
+			setIsSuccess(true);
 		} catch (error) {
 			setErrorMessage("Error: Failed to reset password. Please try again.");
+			setIsSuccess(false);
 		}
 	};
 
@@ -56,7 +59,7 @@ const ForgotPasswordPage = () => {
 					
 
 					<form onSubmit={handleSubmit}>
-                    {errorMessage && <div style={{marginLeft:"10px", marginTop:"10px", color:"#20609C", fontSize:"12px"}}>{errorMessage}</div>}
+                    {errorMessage && <div style={{marginLeft:"10px", marginTop:"10px", color: isSuccess ? "green" : "red", fontSize:"12px"}}>{errorMessage}</div>}
 
 						<div className="input margin" style={{marginTop: "10px"}}>
 							<p

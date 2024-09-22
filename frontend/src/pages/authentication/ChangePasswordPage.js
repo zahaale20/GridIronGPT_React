@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import axios from "axios";
-import {useNavigate, useSearchParams} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import PropTypes from "prop-types"; // Import PropTypes for prop validation
 import {FaEye, FaEyeSlash, FaCheckCircle, FaTimesCircle} from "react-icons/fa";
 import logoImage from "../../assets/gridiron_gpt_secondary_dark.png";
@@ -13,8 +13,6 @@ const ChangePasswordPage = () => {
 	const [passwordVisible, setPasswordVisible] = useState(false);
 	const [passwordFocused, setPasswordFocused] = useState(false);
 	const navigate = useNavigate();
-	const [searchParams] = useSearchParams();
-	const token = searchParams.get(process.env.REACT_APP_JWT_TOKEN_NAME);
 
 	const isPasswordValid =
 		password.length >= 8 &&
@@ -30,26 +28,27 @@ const ChangePasswordPage = () => {
 
 	const handleSubmit = async e => {
 		e.preventDefault();
+		
 		if (!isPasswordValid) {
 			alert("Password does not meet the required criteria.");
 			return;
 		}
 
+		const token = localStorage.getItem(process.env.REACT_APP_JWT_TOKEN_NAME);
+
 		try {
 			await axios.post(
-				process.env.REACT_APP_BACKEND_LINK + "/users/reset-password",
-				{
-					token,
-					password
-				}
+				`${process.env.REACT_APP_BACKEND_LINK}/users/change-password`,
+				{ password },
+				{ headers: { Authorization: `Bearer ${token}` } }
 			);
 			setErrorMessage(
 				"Password has been successfully reset. You can now login with your new password."
 			);
-			navigate("/login");
+			navigate("/profile");
 		} catch (error) {
 			setErrorMessage(
-				"Failed to reset password. Please try again or request a new password reset link."
+				"Failed to change password. Please try again or request a new password reset link."
 			);
 		}
 	};

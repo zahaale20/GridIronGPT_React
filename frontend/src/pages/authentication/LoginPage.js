@@ -31,6 +31,8 @@ function LoginPage() {
 	// Toggles the visibility of the password input field
 	const togglePasswordVisibility = () => {
 		setPasswordVisible(!passwordVisible);
+		const clientId = process.env.REACT_APP_GOOGLE_CLIENT_ID;
+		console.log(clientId);
 	};
 
 	// Handles the form submission event for login
@@ -66,8 +68,7 @@ function LoginPage() {
 	};
 
 	const handleGoogleLogin = () => {
-		const clientId =
-			"793863058012-8cndh99u4rn15ar9m06uklo7hlovp83r.apps.googleusercontent.com";
+		const clientId = process.env.REACT_APP_GOOGLE_CLIENT_ID;
 
 		const redirectUrl =
 			process.env.REACT_APP_BACKEND_LINK + "/users/auth/google/callback";

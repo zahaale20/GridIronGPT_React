@@ -1,6 +1,7 @@
 // userRoutes.js
 /* global require, process, module */
 const express = require("express");
+const multer = require("multer");
 const router = express.Router();
 const bcryptjs = require("bcryptjs");
 const {google} = require("googleapis");
@@ -9,18 +10,9 @@ const crypto = require("crypto");
 const {verifyToken} = require("../util/middleware");
 const {Pool} = require("pg");
 require("dotenv").config();
-const fs = require('fs');
-// Use fs.readFileSync to load the image as base64
-const path = require('path');
-
-// Convert image to base64
-let base64Image = '';
-try {
-  const bannerImage = fs.readFileSync(path.join(__dirname, '../assets/gridiron_gpt_primary_dark.png'), { encoding: 'base64' });
-  base64Image = `data:image/png;base64,${bannerImage}`;
-} catch (error) {
-  console.error("Error reading image file:", error);
-}
+const storage = multer.memoryStorage();
+const upload = multer({storage});
+const {uploadImageToS3} = require("../util/s3");
 
 const connectionString = process.env.DB_CONNECTION_STRING; // stores supabase db connection string, allowing us to connect to supabase db
 // console.log("\nconnectionString: ", connectionString);
@@ -33,7 +25,7 @@ const oauth2Client = new google.auth.OAuth2(
 	process.env.GOOGLE_CLIENT_SECRET,
 	process.env.REACT_APP_BACKEND_LINK + "/users/auth/google/callback"
 );
-// console.log("\noAuth2Client: ", oauth2Client);
+
 
 // Create connection pool to connect to the database.
 function createConnection() {
@@ -136,8 +128,8 @@ router.post("/register", async (req, res) => {
 		// Insert user details into the users table.
 		// result is used only to execute the query... we don't actually need it for anything else
 		const {result} = await connection.query(
-			"INSERT INTO users (username, \"fullName\", password, email, \"phoneNumber\") VALUES ($1, $2, $3, $4, $5)",
-			[username, fullName, hashedPassword, email, phoneNumber]
+			"INSERT INTO users (username, \"fullName\", password, email, \"phoneNumber\", \"isProfilePicture\") VALUES ($1, $2, $3, $4, $5, $6)",
+			[username, fullName, hashedPassword, email, phoneNumber, false]
 		);
         // console.log("\n result: ", result);
 
@@ -257,55 +249,44 @@ router.get("/auth/google/callback", async (req, res) => {
 });
 
 router.post("/register-google-user", async (req, res) => {
-	const {email, name, username, phoneNumber} = req.body;
+    const {email, name, username, phoneNumber, password} = req.body;
 
-	try {
-		const connection = createConnection();
+    try {
+        const connection = createConnection();
 
-		// check if the user already exists in the database
-		const existingUser = await connection.query(
-			"SELECT * FROM users WHERE email = $1",
-			[email]
-		);
+        // Check if the user already exists based on their email
+        const existingUsers = await connection.query(
+            "SELECT * FROM users WHERE email = $1",
+            [email]
+        );
 
-		if (existingUser.rows.length > 0) {
-			const user = existingUser.rows[0];
+        if (existingUsers.rows.length > 0) {
+            // User already exists, create a JWT and return it
+            const user = existingUsers.rows[0];
+            const token = jwt.sign({ username: user.username }, secretKey, { expiresIn: "24h" });
+            return res.status(200).json({ message: "User already exists. Logged in successfully.", token });
+        }
 
-			// if the user exists and has a password, they should use their Haggle credentials to log in
-			if (user.password) {
-				return res.status(409).json({
-					error: "User exists with a password. Please use login credentials to log in."
-				});
-			}
+        // User does not exist, hash the password and create a new user
+        const hashedPassword = await bcryptjs.hash(password, 10);
+        const newUser = await connection.query(
+            "INSERT INTO users (username, \"fullName\", password, email, \"phoneNumber\", \"isProfilePicture\") VALUES ($1, $2, $3, $4, $5, $6) RETURNING *",
+            [username, name, hashedPassword, email, phoneNumber, false]
+        );
 
-			// if the user exists and does not have a password, continue the registration process
-			const token = jwt.sign({username: user.username}, secretKey, {
-				expiresIn: "24h"
-			});
-
-			res.redirect(
-				process.env.REACT_APP_FRONTEND_LINK +
-					`/profile?token=${encodeURIComponent(token)}`
-			);
-		}
-
-		// if the user does not exist in the database, insert new user details
-		const result = await connection.query(
-			"INSERT INTO users (email, \"fullName\", username, \"phoneNumber\") VALUES ($1, $2, $3, $4) RETURNING *",
-			[email, name, username, phoneNumber]
-		);
-		const newUser = result.rows[0];
-		const token = jwt.sign({username: newUser.username}, secretKey, {
-			expiresIn: "24h"
-		});
-		res.status(201).json({
-			message: "User registered successfully via Google",
-			token
-		});
-	} catch (error) {
-		res.status(500).json({error: "Failed to register user"});
-	}
+        if (newUser.rows.length > 0) {
+            const createdUser = newUser.rows[0];
+            const token = jwt.sign({ username: createdUser.username }, secretKey, { expiresIn: "24h" });
+            res.status(201).json({ message: "User registered successfully via Google", token });
+        } else {
+            throw new Error("Failed to create a new user.");
+        }
+    } catch (error) {
+        console.error("Registration error:", error);
+        res.status(500).json({ error: "Failed to register user", details: error.message });
+    }
 });
+
 
 router.get("/profile", verifyToken, async (req, res) => {
 	const username = req.user.username;
@@ -445,12 +426,13 @@ router.post("/forgot-password", async (req, res) => {
 			<div style="font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 16px; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e0e0e0; border-radius: 8px; background-color: #f9f9f9;">
 			
 			<div style="text-align: center; padding-bottom: 20px;">
-				<img src="${base64Image}" alt="Gridiron GPT Banner" style="width: 100%; height: auto; border-bottom: 1px solid #e0e0e0;" />
+				<img src="https://github.com/zahaale20/GridIronGPT_React/blob/main/frontend/src/assets/gridiron_gpt_primary_dark.png?raw=true" alt="Gridiron GPT Banner" style="width: 50%; height: auto; " />
 			</div>
+		  
 		
 			
 			<div style="background-color: #ffffff; padding: 20px; border-radius: 8px;">
-			  <p style="font-size: 18px; color: #555;">Greetings, <strong>${user[0].fullName}</strong>,</p>
+			  <p style="font-size: 18px; color: #555;">Greetings <strong>${user[0].fullName}</strong>,</p>
 			  <p style="color: #666;">We received a request to reset the password associated with your account. If you made this request, please click the button below to reset your password:</p>
 			  <div style="text-align: center; margin: 30px 0;">
 				<a href="${resetUrl}" style="display: inline-block; padding: 12px 25px; background-color: #2F3D77; color: #fff; font-size: 16px; text-decoration: none; border-radius: 5px; box-shadow: 0px 4px 6px rgba(0,0,0,0.1);">
@@ -459,7 +441,7 @@ router.post("/forgot-password", async (req, res) => {
 			  </div>
 			  <p style="color: #666;">If you did not request a password reset, you can safely ignore this email. Your password will not change unless you click the button above and create a new one.</p>
 			  <p style="color: #666;">If you have any questions or need assistance, feel free to <a href="mailto:gridiron_gpt@outlook.com" style="color: #2F3D77; text-decoration: none;">contact our support team</a>.</p>
-			  <p style="color: #666;">Thank you,<br><strong>Gridiron Team</strong></p>
+			  <p style="color: #666;">Thank you,<br><strong>Gridiron GPT Team</strong></p>
 			</div>
 			
 			<hr style="border: none; border-top: 1px solid #e0e0e0; margin: 30px 0;" />
@@ -491,6 +473,27 @@ router.post("/forgot-password", async (req, res) => {
 		res.status(500).json({error: "Failed to send forgot password email"});
 	}
 });
+
+router.post("/change-password", verifyToken, async (req, res) => {
+    const { password } = req.body;
+    const username = req.user.username;
+
+    try {
+        const connection = createConnection();
+        const hashedPassword = await bcryptjs.hash(password, 10);
+
+        await connection.query(
+            "UPDATE users SET password = $1 WHERE username = $2",
+            [hashedPassword, username]
+        );
+
+        res.json({ message: "Password has been reset successfully." });
+    } catch (error) {
+        res.status(500).json({ error: "Failed to reset password." });
+    }
+});
+
+
 
 router.post("/reset-password", async (req, res) => {
 	const { token, password } = req.body;
@@ -537,6 +540,50 @@ router.get("/:userID/", async (req, res) => {
 	} catch (error) {
 		console.error("An error occurred while fetching the user:", error);
 		res.status(500).send("An error occurred while fetching the user");
+	}
+});
+
+router.post(
+	"/change-profile-image",
+	verifyToken,
+	upload.single("image"),
+	async (req, res) => {
+		const {userID} = req.body;
+		try {
+			const connection = createConnection();
+			const image = req.file;
+
+			await uploadImageToS3(`user/${userID}/bruh0.jpg`, image.buffer);
+			const query =
+				"UPDATE users SET \"isProfilePicture\" = true WHERE \"userID\" = $1";
+			await connection.query(query, [userID]);
+
+			res.status(200).json({
+				message: "Profile picture changed successfully"
+			});
+		} catch (error) {
+			res.status(500).json({error: "Failed to change profile picture"});
+		}
+	}
+);
+
+router.get("/is-profile-picture/:userID", async (req, res) => {
+	try {
+		const {userID} = req.params; // extract userID from request parameters
+		const connection = createConnection();
+		const query =
+			"SELECT \"isProfilePicture\" FROM users WHERE \"userID\" = $1";
+		const {rows} = await connection.query(query, [userID]);
+
+		if (rows.length === 0) {
+			// check if any rows were returned
+			return res.status(404).json({error: "User not found"}); // if no such user found there is an error
+		}
+
+		const {isProfilePicture} = rows[0]; // extract bool val from first row
+		res.json({isProfilePicture}); // return true
+	} catch (error) {
+		res.status(500).json({error: "Failed to fetch isProfilePicture"});
 	}
 });
 
